@@ -118,4 +118,19 @@ public class FXMLDocumentController implements Initializable {
         
         return wertVorhanden;
     }
+    
+    /*
+    Modus:
+    1 -> Alles ändern
+    2 -> nur ein Element ändern
+    */
+    public void aendereFeld(int [][] feld, int xKor, int yKor, int element, int modus){
+        if (element == 1){
+            for (int i = 0; i < feld.length; i++){
+                for (int j = 0; j < feld[i].length; j++){
+                    
+                }
+            }
+        }
+    }
 }
