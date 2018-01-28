@@ -276,6 +276,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     void erzeugenStart(ActionEvent event) {
         System.out.println("Erzeugen gedrückt");
+        //aendereFeld(8,8,"5");
         erzeugeFeld(1);
     }
     
@@ -323,18 +324,23 @@ public class FXMLDocumentController implements Initializable {
         
         //Speichervariable für generiertes Feld
         int neuesElement;
-        boolean freigabe;
+        boolean freigabe = false;
         
         //Erzeugung des Feldes mittels Zufallkoordinaten
         for (int i = 0; i < anzahlFelder; i++){
             do{
-               x = random.nextInt(8) + 1;
-               y = random.nextInt(8) + 1;
+               x = random.nextInt(9);
+               y = random.nextInt(9);
+               System.out.println("X:" + x + " Y: " + y);
             }while(feld[x][y] != 0);
             if (feld[x][y] == 0){
                 do {
-                    neuesElement = random.nextInt(8) + 1;
-                }while(!(freigabe = checkNeuesElement(feld, x, y, neuesElement)));
+                    neuesElement = (random.nextInt(8) + 2);
+                    System.out.println("Neues Element ist: " + neuesElement);
+                    freigabe = checkNeuesElement(feld, x, y, neuesElement);
+                    System.out.println("Freigabe: " + freigabe);
+                }while(!freigabe);
+                System.out.println("Schleife verlassen - Freigabe: " + freigabe);
                 if (freigabe){
                     feld[x][y] = neuesElement;
                     aendereFeld(x,y, String.valueOf(neuesElement));
@@ -352,7 +358,7 @@ public class FXMLDocumentController implements Initializable {
     ob dieser laut Spielregeln eingefügt werden darf
     */
     private boolean checkNeuesElement(int [][] feld, int xKor, int yKor, int neuerWert){
-        boolean wertVorhanden = false;
+        boolean wertVorhanden = true;
         
         //Checkt horizontale und vertikale Linie auf vorhandenes Element
         for (int i = 0; i < feld.length; i++){
