@@ -265,6 +265,8 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private TextField feld99;
+    
+    //Generator generator = new Generator(feld);
 
     
     @FXML
