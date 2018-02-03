@@ -318,6 +318,7 @@ public class FXMLDocumentController implements Initializable {
         for (int i = 0; i < feld.length; i++){
             for (int j = 0; j < feld[i].length; j++){
                 feld[i][j] = 0;
+                aendereFeld(i,j,"");
             }
         }
         
@@ -369,9 +370,91 @@ public class FXMLDocumentController implements Initializable {
             }
         }
         
+        /*
+        #################################
+        ###       ###       ###       ###
+        ###   1   ###   2   ###   3   ###
+        ###       ###       ###       ###
+        #################################
+        ###       ###       ###       ###
+        ###   4   ###   5   ###   6   ###
+        ###       ###       ###       ###
+        #################################
+        ###       ###       ###       ###
+        ###   7   ###   8   ###   9   ###
+        ###       ###       ###       ###
+        #################################
+        */
+        int von = 99;
+        int bis = 99;
         //Checkt 3 x 3 Feld
-        
+        if (xKor < 3) {
+            //1. Feld
+            if (yKor < 3){
+                
+            } else if (yKor < 6 && yKor > 2){    //2. Feld
+                
+            } else if (yKor < 9 && yKor > 5){    //3. Feld
+                
+            } else {
+                System.out.println("Fehler bei der 3x3 Freigabe");
+            }
+        } else if (xKor < 6 && xKor > 2){
+            //4. Feld
+            if (yKor < 3){
+                
+            } else if (yKor < 6 && yKor > 2){   //5. Feld
+                
+            } else if (yKor < 9 && yKor > 5){   //6. Feld
+                
+            } else {
+                System.out.println("Fehler bei der 3x3 Freigabe");
+            }
+        } else if (xKor < 9 && xKor >5){
+            //7. Feld
+            if (yKor < 3){
+                
+            } else if (yKor < 6 && yKor > 2){   //8. Feld
+                
+            } else if (yKor < 9 && yKor > 5){   //9. Feld
+                
+            } else {
+                System.out.println("Fehler bei der 3x3 Freigabe");
+            }
+        } else {
+            System.out.println("Fehler bei der 3x3 Freigabe");
+        }
         return wertVorhanden;
+    }
+    
+    private boolean isfine(int feld[][], int x, int y){
+        
+        //doppelte Zahl in Zeile
+        for (int yi = 0; yi < 9; yi++){
+            if (yi != y && feld[x][yi] == feld[x][y]){
+                return false;
+            }
+        }
+        
+        //doppelte Zahl in Spalte
+        for (int xi = 0; xi < 9; xi++){
+            if (xi != x && feld[xi][y] == feld[x][y]){
+                return false;
+            }
+        }
+        
+        //Neuner-Kästchen-Test
+        int x1 = (x / 3) * 3;
+        int y1 = (y / 3) * 3;
+        for (int xk = x1; xk < x1 + 3; xk++){
+            for (int yk = y1; yk < y1 + 3; yk++){
+                if ((xk != x || yk != y) && feld[xk][yk] == feld[x][y]){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
     }
     
     /*
