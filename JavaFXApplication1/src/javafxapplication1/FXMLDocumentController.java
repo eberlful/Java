@@ -385,44 +385,148 @@ public class FXMLDocumentController implements Initializable {
         ###       ###       ###       ###
         #################################
         */
-        int von = 99;
-        int bis = 99;
+        int Xvon = 99;
+        int Xbis = 99;
+        int Yvon = 99;
+        int Ybis = 99;
         //Checkt 3 x 3 Feld
         if (xKor < 3) {
             //1. Feld
             if (yKor < 3){
-                
+                Xvon = 0;
+                Xbis = 2;
+                Yvon = 0;
+                Ybis = 2;
             } else if (yKor < 6 && yKor > 2){    //2. Feld
-                
+                Xvon = 0;
+                Xbis = 2;
+                Yvon = 3;
+                Ybis = 5;
             } else if (yKor < 9 && yKor > 5){    //3. Feld
-                
+                Xvon = 0;
+                Xbis = 2;
+                Yvon = 6;
+                Ybis = 8;
             } else {
                 System.out.println("Fehler bei der 3x3 Freigabe");
             }
         } else if (xKor < 6 && xKor > 2){
             //4. Feld
             if (yKor < 3){
-                
+                Xvon = 3;
+                Xbis = 5;
+                Yvon = 0;
+                Ybis = 2;
             } else if (yKor < 6 && yKor > 2){   //5. Feld
-                
+                Xvon = 3;
+                Xbis = 5;
+                Yvon = 3;
+                Ybis = 5;
             } else if (yKor < 9 && yKor > 5){   //6. Feld
-                
+                Xvon = 3;
+                Xbis = 5;
+                Yvon = 6;
+                Ybis = 8;
             } else {
                 System.out.println("Fehler bei der 3x3 Freigabe");
             }
         } else if (xKor < 9 && xKor >5){
             //7. Feld
             if (yKor < 3){
-                
+                Xvon = 6;
+                Xbis = 8;
+                Yvon = 0;
+                Ybis = 2;
             } else if (yKor < 6 && yKor > 2){   //8. Feld
-                
+                Xvon = 6;
+                Xbis = 8;
+                Yvon = 3;
+                Ybis = 5;
             } else if (yKor < 9 && yKor > 5){   //9. Feld
-                
+                Xvon = 6;
+                Xbis = 8;
+                Yvon = 6;
+                Ybis = 8;
             } else {
                 System.out.println("Fehler bei der 3x3 Freigabe");
             }
         } else {
             System.out.println("Fehler bei der 3x3 Freigabe");
+        }
+        
+        boolean[] array = {false, false, false, false, false, false, false, false, false};
+        if (Xvon < 9 && Xbis < 9 && Yvon < 9 && Ybis < 9){
+            for (int i = Xvon; i <= Xbis; i++){
+                for (int j = Yvon; j <= Ybis; j++){
+                    switch (feld[i][j]){
+                        case 1:
+                            if (array[0] == true){
+                                return false;
+                            } else {
+                                array[0] = true;
+                            }
+                            break;
+                        case 2:
+                            if (array[1] == true){
+                                return false;
+                            } else {
+                                array[1] = true;
+                            }
+                            break;
+                        case 3:
+                            if (array[2] == true){
+                                return false;
+                            } else {
+                                array[2] = true;
+                            }
+                            break;
+                        case 4:
+                            if (array[3] == true){
+                                return false;
+                            } else {
+                                array[3] = true;
+                            }
+                            break;
+                        case 5:
+                            if (array[4] == true){
+                                return false;
+                            } else {
+                                array[4] = true;
+                            }
+                            break;
+                        case 6:
+                            if (array[5] == true){
+                                return false;
+                            } else {
+                                array[5] = true;
+                            }
+                            break;
+                        case 7:
+                            if (array[6] == true){
+                                return false;
+                            } else {
+                                array[6] = true;
+                            }
+                            break;
+                        case 8:
+                            if (array[7] == true){
+                                return false;
+                            } else {
+                                array[7] = true;
+                            }
+                            break;
+                        case 9:
+                            if (array[8] == true){
+                                return false;
+                            } else {
+                                array[8] = true;
+                            }
+                            break;
+                    }
+                }
+            }
+        } else {
+            System.out.println("Fehler bei der 3x3 Zuordnung");
         }
         return wertVorhanden;
     }
