@@ -12,7 +12,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.layout.Background;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -267,7 +271,33 @@ public class FXMLDocumentController implements Initializable {
     private TextField feld99;
     
     //Generator generator = new Generator(feld);
-
+    
+    @FXML
+    private RadioButton radioButtonleicht;
+    
+    @FXML
+    private RadioButton radioButtonmittel;
+    
+    @FXML
+    private RadioButton radioButtonschwer;
+    
+    @FXML
+    private RadioButton radioButtonja;
+    
+    private RadioButton radioButtonnein;
+    
+    int [][] feldGlobal = new int[9][9];
+    
+    @FXML
+    void textChangeFeld11(InputMethodEvent event) {
+        System.out.println("Feld11 geändert");
+        boolean freigabe = checkNeuesElement(feldGlobal, 0, 0, Integer.getInteger(feld11.getText()));
+        if (freigabe == true){
+            feldGlobal[0][0] = Integer.getInteger(feld11.getText());
+        } else {
+            feld11.setStyle("-fx-text-fill: red");
+        }
+    }
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -279,7 +309,21 @@ public class FXMLDocumentController implements Initializable {
     void erzeugenStart(ActionEvent event) {
         System.out.println("Erzeugen gedrückt");
         //aendereFeld(8,8,"5");
-        erzeugeFeld(1);
+        if (radioButtonleicht.isSelected()){
+            erzeugeFeld(1);
+        } else if (radioButtonmittel.isSelected()){
+            erzeugeFeld(2);
+        } else if (radioButtonschwer.isSelected()){
+            erzeugeFeld(3);
+        } else {
+            JOptionPane.showMessageDialog(null,"Es wurde keine Schwierigkeitsauswahl getroffen","Auswahlfehler", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+    }
+    
+    @FXML
+    void loesenStart(ActionEvent event) {
+        loesen(feldGlobal);
     }
     
     @Override
@@ -353,7 +397,9 @@ public class FXMLDocumentController implements Initializable {
             } else {
                 System.out.println("Fehler bei der Zufallserzeugung!!!");
             }
-        }        
+        }
+
+        feldGlobal = feld;
     }
     
     /*
@@ -458,7 +504,10 @@ public class FXMLDocumentController implements Initializable {
         if (Xvon < 9 && Xbis < 9 && Yvon < 9 && Ybis < 9){
             for (int i = Xvon; i <= Xbis; i++){
                 for (int j = Yvon; j <= Ybis; j++){
-                    switch (feld[i][j]){
+                    if (feld[i][j] == neuerWert){
+                        return false;
+                    }
+                    /*switch (feld[i][j]){
                         case 1:
                             if (array[0] == true){
                                 return false;
@@ -522,7 +571,7 @@ public class FXMLDocumentController implements Initializable {
                                 array[8] = true;
                             }
                             break;
-                    }
+                    }*/
                 }
             }
         } else {
@@ -531,7 +580,7 @@ public class FXMLDocumentController implements Initializable {
         return wertVorhanden;
     }
     
-    private boolean isfine(int feld[][], int x, int y){
+    private boolean isfine2(int feld[][], int x, int y){
         
         //doppelte Zahl in Zeile
         for (int yi = 0; yi < 9; yi++){
@@ -749,6 +798,87 @@ public class FXMLDocumentController implements Initializable {
                 feld99.setText(element);
             }
         }
+    }
+    
+    
+    
+    /*
+    --------------------------------------------------------------------------------------------------------------------------
+    */
+    
+    private boolean isfine(int feld[][], int x, int y){
+        
+        //doppelte Zahl in Zeile
+        for (int yi = 0; yi < 9; yi++){
+            if (yi != y && feld[x][yi] == feld[x][y]){
+                return false;
+            }
+        }
+        
+        //doppelte Zahl in Spalte
+        for (int xi = 0; xi < 9; xi++){
+            if (xi != x && feld[xi][y] == feld[x][y]){
+                return false;
+            }
+        }
+        
+        //Neuner-Kästchen-Test
+        int x1 = (x / 3) * 3;
+        int y1 = (y / 3) * 3;
+        for (int xk = x1; xk < x1 + 3; xk++){
+            for (int yk = y1; yk < y1 + 3; yk++){
+                if ((xk != x || yk != y) && feld[xk][yk] == feld[x][y]){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    private boolean nextone(int feld[][], int x, int y){
+        if (y == 9){
+            y = 0;
+            x++;
+        }
+        
+        if (x == 9){
+            return true;
+        }
+        
+        if (feld[x][y] > 0){
+            if (!isfine(feld, x, y)){
+                return false;
+            }
+            return nextone(feld, x, y+1);
+        } else {
+            for (feld[x][y] = 1; feld[x][y] <= 9; feld[x][y]++){
+                if (!isfine(feld, x, y)){
+                    continue;
+                }
+                if (nextone(feld, x, y + 1)){
+                    return true;
+                }
+            }
+        }
+        feld[x][y] = 0;
+        return false;
+    }
+    
+    public int [][] loesen (int [][] feldInPut){
+        if (nextone(feldInPut, 0, 0)){
+            for (int x = 0; x < 9; x++){
+                for (int y = 0; y < 9; y++){
+                    aendereFeld(x,y,String.valueOf(feldInPut[x][y]));
+                    System.out.print(feldInPut[x][y]);
+                }
+                System.out.println();
+            }
+        } else {
+            System.out.println("Dieses Sudoku hat keine Lösung");
+        }
+        
+        return feldInPut;
     }
     
 }
