@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javax.swing.JOptionPane;
 
@@ -320,6 +321,26 @@ public class FXMLDocumentController implements Initializable {
         }
         
     }
+    
+    boolean feldgefuelt = true;
+    
+    @FXML
+    void Action(KeyEvent event) {
+        boolean freigabe = true;
+        int a = Integer.getInteger(event.getText());
+        if (feldgefuelt){
+            freigabe = checkNeuesElement(feldGlobal, 0, 0, a);
+            
+        }
+        
+        /*if (freigabe == true){
+            feldGlobal[0][0] = Integer.getInteger(feld11.getText());
+        } else {
+            feld11.setStyle("-fx-text-fill: red");
+        }*/
+        System.out.println("hallo" + event.getText());
+    }
+
     
     @FXML
     void loesenStart(ActionEvent event) {

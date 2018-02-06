@@ -72,7 +72,7 @@
          <center>
             <AnchorPane prefHeight="584.0" prefWidth="735.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextField fx:id="feld11" alignment="CENTER" layoutX="33.0" layoutY="26.0" onInputMethodTextChanged="#textChangeFeld11" prefHeight="51.0" prefWidth="51.0">
+                  <TextField fx:id="feld11" alignment="CENTER" layoutX="33.0" layoutY="26.0" onInputMethodTextChanged="#textChangeFeld11" onKeyPressed="#Action" prefHeight="51.0" prefWidth="51.0">
                      <font>
                         <Font size="24.0" />
                      </font>
