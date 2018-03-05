@@ -5,7 +5,6 @@
  */
 package s7connector;
 
-import Moka7.S7;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
