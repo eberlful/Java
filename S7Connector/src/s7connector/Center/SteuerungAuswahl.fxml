@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="567.0" prefWidth="783.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Allgemein">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <SplitPane dividerPositions="0.4942381562099872" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <VBox alignment="CENTER" layoutX="142.0" layoutY="111.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="39.0" prefWidth="383.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Name:" />
+                                                <JFXTextField fx:id="nameSteuerungAuswahl" editable="false">
+                                                   <font>
+                                                      <Font name="System Bold" size="14.0" />
+                                                   </font>
+                                                </JFXTextField>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="39.0" prefWidth="383.0" spacing="20.0">
+                                             <children>
+                                                <Label text="IP-Adresse:" />
+                                                <JFXTextField fx:id="ipAdresseSteuerungAuswahl" editable="false" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="33.0" prefWidth="383.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Rack:" />
+                                                <JFXTextField fx:id="rackSteuerungAuswahl" editable="false" prefHeight="25.0" prefWidth="48.0" />
+                                                <Label text="Slot:" />
+                                                <JFXTextField fx:id="slotSteuerungAuswahl" editable="false" prefHeight="25.0" prefWidth="48.0" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="39.0" prefWidth="383.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Funktionsbit:" />
+                                                <JFXTextField fx:id="funktionsbitSteuerungAuswahl" editable="false" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="39.0" prefWidth="383.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Aktueller  Zustand:" />
+                                                <JFXTextField fx:id="aktuellerZustandSteuerungAuswahl" editable="false" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="39.0" prefWidth="383.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Letztzer Fehler:" />
+                                                <JFXTextField fx:id="letzterFehlerSteuerungAuswahl" editable="false" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <JFXButton prefHeight="40.0" prefWidth="160.0" text="Neuer Fehler" />
+                                          <JFXButton prefHeight="40.0" prefWidth="160.0" text="Fehlerübersicht" />
+                                          <JFXButton prefHeight="40.0" prefWidth="160.0" text="Fehler importieren" />
+                                       </children>
+                                    </VBox>
+                                 </children></AnchorPane>
+                          </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Fehler Allgemein">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Fehler Historie">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

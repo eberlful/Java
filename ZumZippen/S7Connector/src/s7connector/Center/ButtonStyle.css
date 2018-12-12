@@ -1,0 +1,79 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 27.11.2018, 21:29:16
+    Author     : marku
+*/
+
+/*------------------------------------------------------------------------------
+Ribbontab -> Home
+------------------------------------------------------------------------------*/
+#sichtSteuerungen{
+    -fx-min-width: 100px;
+}
+
+#sichtOnline{
+    -fx-min-width: 100px;
+}
+
+#jobStart{
+    -fx-min-width: 100px;
+}
+
+#jobStop{
+    -fx-min-width: 100px;
+}
+
+#steuerungVerwaltenNeueSteuerung{
+    -fx-min-width: 140px;
+}
+
+#steuerungVerwaltenLöschen{
+    -fx-min-width: 100px;
+}
+
+#steuerungZustandStart{
+    -fx-min-width: 100px;
+}
+
+#steuerungZustandStop{
+    -fx-min-width: 100px;
+}
+
+#fertigungVerwaltenNeueFertigung{
+    -fx-min-width: 140px;
+}
+
+#fertigungVerwaltenLoeschen{
+    -fx-min-width: 140px;
+}
+
+#einstellungenAnzeigen{
+    -fx-min-width: 140px;
+}
+
+#benutzerverwaltungAnmeldungAnmelden{
+    -fx-min-width: 140px;
+}
+
+#benutzerverwaltungAnmeldungAbmelden{
+    -fx-min-width: 140px;
+}
+
+#benutzerverwaltungVerwaltenNeuerBenutzer{
+    -fx-min-width: 140px;
+}
+
+#benutzerverwaltungVerwaltenBenutzerLöschen{
+    -fx-min-width: 140px;
+}
+
+/*------------------------------------------------------------------------------
+Neue Steuerung
+------------------------------------------------------------------------------*/
+#speichernNeueSteuerung.hover{
+    -fx-background-color: grey;
+}

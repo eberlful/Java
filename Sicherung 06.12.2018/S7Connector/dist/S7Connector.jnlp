@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="S7Connector.jnlp">
+  <information>
+    <title>S7Connector</title>
+    <vendor>marku</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="S7Connector.jar" size="346391" download="eager" />
+    <jar href="lib\Moka7-project.jar" size="43364" download="eager" />
+    <jar href="lib\fxribbon-1.2.1.jar" size="19038" download="eager" />
+    <jar href="lib\jfoenix-8.0.7.jar" size="2631271" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="S7Connector" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="s7connector.S7Connector"  name="S7Connector" />
+  <update check="always"/>
+</jnlp>
