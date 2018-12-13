@@ -171,6 +171,27 @@ public class FXMLDocumentController implements Initializable {
     }
     
     @FXML
+    private void wochenauswertungStarten(ActionEvent event){
+        try {
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "\n" + e.getStackTrace());
+            setConsoleColorRed();
+            consoleArea.appendText(new Date().toString() + ": " + e.getMessage() + "\n");
+            consoleArea.appendText(new Date().toString() + ": " + e.getStackTrace() + "\n");
+            setConsoleColorBlack();
+        }
+    }
+    
+    private void exceptionOutput(Exception e){
+            System.out.println(e.getMessage() + "\n" + e.getStackTrace());
+            setConsoleColorRed();
+            consoleArea.appendText(new Date().toString() + ": " + e.getMessage() + "\n");
+            consoleArea.appendText(new Date().toString() + ": " + e.getStackTrace() + "\n");
+            setConsoleColorBlack();
+    }
+    
+    @FXML
     private void userAnmeldungAnzeigen(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/BenutzerAnmelden.fxml"));

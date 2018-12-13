@@ -517,6 +517,17 @@
                     </ribbonGroups>
                 </RibbonTab>
                 <RibbonTab text="Statistik">
+                    <ribbonGroups>
+                        <RibbonGroup title="Wochenauswertung">
+                            <nodes>
+                                <Button fx:id="statistikWochenauswertungStarten" contentDisplay="TOP" onAction="#wochenauswertungStarten" styleClass="big" text="Wochenauswertung Starten" wrapText="true">
+                                    <graphic>
+                                        <Image url="@icons8-aussteller-40.png" />
+                                    </graphic>
+                                </Button>
+                            </nodes>
+                        </RibbonGroup>
+                    </ribbonGroups>
                 </RibbonTab>
                 <RibbonTab text="Einstellungen">
                     <ribbonGroups>
@@ -750,9 +761,12 @@
                      </children></AnchorPane>
             </content>
           </TitledPane>
-          <TitledPane animated="false" text="untitled 3">
+          <TitledPane animated="false" text="Überwachungsfehler">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="ueberwachungsListView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children></AnchorPane>
             </content>
           </TitledPane>
         </panes>
