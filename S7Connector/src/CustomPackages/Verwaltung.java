@@ -17,9 +17,11 @@ public class Verwaltung implements Serializable{
     private ArrayList<Fertigung> fertigungList = new ArrayList<Fertigung>();
     private int currentUser;    // 99 = Root
     private String currentUserName = "";
+    private Einstellungen einstellung;
 
     public Verwaltung() {
         currentUser = 0;
+        einstellung = new Einstellungen(true, true, currentUserName, currentUser);
     }
     
     public boolean checkUser(String username, String password){
@@ -30,6 +32,14 @@ public class Verwaltung implements Serializable{
         } else {
             return false;
         }
+    }
+    
+    public Einstellungen getEinstellung(){
+        return einstellung;
+    }
+    
+    public void setEinstellungen(Einstellungen ein){
+        this.einstellung = ein;
     }
     
     public void addSteuerung(Steuerung steuerung){

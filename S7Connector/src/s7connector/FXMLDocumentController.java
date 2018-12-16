@@ -5,11 +5,13 @@
  */
 package s7connector;
 
+import CustomPackages.Einstellungen;
 import CustomPackages.Fehler;
 import CustomPackages.Fertigung;
 import CustomPackages.Linie;
 import CustomPackages.Steuerung;
 import CustomPackages.Verwaltung;
+import OriginalClass.VerwaltungSave;
 import com.jfoenix.animation.alert.CenterTransition;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
@@ -17,9 +19,11 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.JFXTreeView;
 import com.pixelduke.control.ribbon.RibbonGroup;
 import com.pixelduke.control.ribbon.RibbonItem;
+import com.sun.javafx.font.FontConstants;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -81,6 +85,7 @@ public class FXMLDocumentController implements Initializable {
     private AnchorPane lastPane;
     // Speichert die aktuelle ausgewählte Steuerung
     private Steuerung currentSteuerung;
+    private String pfadEinstellung = "einstellung.ser";
     
     @FXML
     private JFXTreeView<Steuerung> treeView;
@@ -152,13 +157,57 @@ public class FXMLDocumentController implements Initializable {
         
     }
     
+    @FXML
+    private JFXToggleButton einstellungenHaeufungToggle;
+
+    @FXML
+    private JFXToggleButton einstellungenDatenbankToggle;
+
+    @FXML
+    private JFXTextField einstellungenAnzahlHaeufung;
+
+    @FXML
+    private JFXTextField einstellungenZeitinterval;
+
+    @FXML
+    private JFXTextField einstellungenIPDB;
     
+    @FXML void einstellungenSpeichern(ActionEvent event){
+        FileOutputStream fos;
+        ObjectOutputStream oos;
+        try {
+            Einstellungen ein = verwaltung.getEinstellung();
+            ein.setDbAktiv(einstellungenDatenbankToggle.isSelected());
+            ein.setHaeufigkeitsPruefung(einstellungenHaeufungToggle.isSelected());
+            ein.setIntervallHaeufigkeit(Integer.parseInt(einstellungenZeitinterval.getText()));
+            ein.setIntervallAnzahl(Integer.parseInt(einstellungenAnzahlHaeufung.getText()));
+            ein.setIpAdresseDB(einstellungenIPDB.getText());
+            //ObjektStream
+            fos = new FileOutputStream(pfadEinstellung);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(verwaltung.getEinstellung());
+            oos.close();
+            fos.close();
+            
+        } catch (Exception e) {
+            exceptionOutput(e);
+        } finally{
+        }
+    }
     
     @FXML
     private void einstellungenAnzeigen(ActionEvent event) {
         try {
-            AnchorPane pane = FXMLLoader.load(getClass().getResource("Center/Einstellungen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/Einstellungen.fxml"));
+            loader.setController(this);
+            AnchorPane pane = loader.load();
             addTab(pane, "Einstellungen");
+            Einstellungen einstell = verwaltung.getEinstellung();
+            einstellungenDatenbankToggle.setSelected(einstell.getDbAktiv());
+            einstellungenHaeufungToggle.setSelected(einstell.getHaeufigkeitsPruefung());
+            einstellungenZeitinterval.setText(einstell.getIntervallHaeufigkeit());
+            einstellungenAnzahlHaeufung.setText(einstell.getIntervallAnzahl());
+            einstellungenIPDB.setText(einstell.getIpAdresseDB());
             //subPane.getChildren().add(pane);
         } catch (Exception e) {
             System.out.println(e.getMessage() + "\n" + e.getStackTrace());
@@ -167,7 +216,6 @@ public class FXMLDocumentController implements Initializable {
             consoleArea.appendText(new Date().toString() + ": " + e.getStackTrace() + "\n");
             setConsoleColorBlack();
         }
-        //label.setText("Hello World!");
     }
     
     @FXML
@@ -185,6 +233,7 @@ public class FXMLDocumentController implements Initializable {
     
     private void exceptionOutput(Exception e){
             System.out.println(e.getMessage() + "\n" + e.getStackTrace());
+            System.out.println(e.getClass() + "\n" + e.getLocalizedMessage());
             setConsoleColorRed();
             consoleArea.appendText(new Date().toString() + ": " + e.getMessage() + "\n");
             consoleArea.appendText(new Date().toString() + ": " + e.getStackTrace() + "\n");
@@ -310,7 +359,8 @@ public class FXMLDocumentController implements Initializable {
             newFertigung.setExpanded(true);
             fertigung.setFertigung(fSteuerung);
             fertigung.setTreeItem(newFertigung);
-            treeView.setRoot(newFertigung);
+            multiRoot.getChildren().add(newFertigung);
+            //treeView.setRoot(newFertigung);
             if(anzahl > 0){
                 for(Linie linie : fertigung.getLinien()){
                     TreeItem<Steuerung> item = new TreeItem<Steuerung>(linie.getSteuerungItem());
@@ -406,6 +456,12 @@ public class FXMLDocumentController implements Initializable {
         if (first) {
             initTabSystem(pane, name);
             Tab firstTab = new Tab(name);
+            firstTab.setOnCloseRequest((event) -> {
+                System.out.println("Aus und Vorbei");
+                if(borderPane.getBottom() == null){
+                    borderPane.setBottom(consoleArea);
+                }
+            });
             firstTab.setClosable(true);
             firstTab.setContent(pane);
             tabControllPane.getTabs().add(firstTab);
@@ -413,6 +469,12 @@ public class FXMLDocumentController implements Initializable {
             first = false;
         } else {
             Tab newTab = new Tab(name);
+            newTab.setOnCloseRequest((event) -> {
+                System.out.println("Aus und Vorbei");
+                if(borderPane.getBottom() == null){
+                    borderPane.setBottom(consoleArea);
+                }
+            });
             newTab.setClosable(true);
             //newTab.setText(name);
             newTab.setContent(pane);
@@ -432,12 +494,39 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextArea consoleArea;
     
+    private TreeItem<Steuerung> multiRoot;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //initTabSystem();
         if (firstInstance) {
             verwaltung = new Verwaltung();
             firstInstance = false;
+            // MultiRootNode für TreeView
+            Steuerung st = new Steuerung(0, "");
+            multiRoot = new TreeItem<Steuerung>(st);
+            treeView.setShowRoot(false);
+            treeView.setRoot(multiRoot);
+        }
+        
+        
+        
+        try {
+            File file = new File(pfadEinstellung);
+            if (file.exists()) {
+                FileInputStream fis = new FileInputStream(pfadEinstellung);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                verwaltung.setEinstellungen((Einstellungen)ois.readObject());
+                ois.close();
+                fis.close();
+            } else {
+                writeConsole("Keine Einstellungsdatei vorhanden!!!");
+                setConsoleColorRed();
+                writeConsole("Einstellungsdatei manuell laden !!!");
+                setConsoleColorBlack();
+            }
+        } catch (Exception e) {
+            exceptionOutput(e);
         }
         
         if(console){
@@ -453,6 +542,10 @@ public class FXMLDocumentController implements Initializable {
         
         ObservableList<String> items =FXCollections.observableArrayList("Hallo", "dfk");
         fehlerListView.setItems(items);
+    }
+    
+    private void writeConsole(String text){
+        consoleArea.appendText(new Date().toString() + ": " + text + "\n");
     }
     
     @FXML
@@ -534,6 +627,7 @@ public class FXMLDocumentController implements Initializable {
             TreeItem<Steuerung> newSteuerung = new TreeItem<Steuerung>(steuerung);
             steuerung.setListViewItem(newSteuerung);
             steuerung.getFertigung().addSteuerung(steuerung);
+            steuerung.getLinie().addSteuerung(steuerung);
             System.out.println("1");
             if (steuerung.getLinie() != null) {
                 System.out.println("Linie nicht Null");
@@ -618,5 +712,152 @@ public class FXMLDocumentController implements Initializable {
         } 
     }
     
+    /*--------------------------------------------------------------------------
+    Bereich für neue Fehler
+    --------------------------------------------------------------------------*/
+    @FXML
+    private JFXTextField neuerFehlerFehlername;
+
+    @FXML
+    private JFXTextField neuerFehlerFehlernummer;
+
+    @FXML
+    private JFXTextField neuerFehlerFehlertext;
+
+    @FXML
+    private JFXCheckBox neuerFehlerDB;
+
+    @FXML
+    private JFXCheckBox neuerFehlerM;
+
+    @FXML
+    private JFXTextField neuerFehlerMerkerByte;
+
+    @FXML
+    private JFXTextField neuerFehlerMerkerBit;
+
+    @FXML
+    private JFXTextField neuerFehlerDatenbaustein;
+
+    @FXML
+    private JFXTextField neuerFehlerDBByte;
+
+    @FXML
+    private JFXTextField neuerFehlerDBBit;
+
+    @FXML
+    private JFXComboBox<Fertigung> neuerFehlerFertigung;
+
+    @FXML
+    private JFXComboBox<Linie> neuerFehlerLinie;
+
+    @FXML
+    private JFXComboBox<Steuerung> neuerFehlerSteuerung;
+
+    @FXML
+    private JFXToggleButton neuerFehlerUeberwachung;
+
+    @FXML
+    void neuerFehlerDBCheckBoxChecked(ActionEvent event) {
+        neuerFehlerM.setSelected(false);
+        neuerFehlerMerkerBit.setText("0");
+        neuerFehlerMerkerByte.setText("0");
+    }
+
+    @FXML
+    void neuerFehlerMerkerCheckBoxChecked(ActionEvent event) {
+        neuerFehlerDB.setSelected(false);
+        neuerFehlerDBBit.setText("0");
+        neuerFehlerDBByte.setText("0");
+        neuerFehlerDatenbaustein.setText("0");
+    }
+
+    @FXML
+    void neuerFehlerSpeichern(ActionEvent event) {
+        try {
+            int art = 0;
+            Fehler fehler = new Fehler(neuerFehlerSteuerung.getSelectionModel().getSelectedItem(), neuerFehlerUeberwachung.isSelected(), Integer.parseInt(neuerFehlerDatenbaustein.getText()), Integer.parseInt(neuerFehlerDBByte.getText()), Integer.parseInt(neuerFehlerDBBit.getText()), art, Integer.parseInt(neuerFehlerMerkerByte.getText()), Integer.parseInt(neuerFehlerMerkerBit.getText()), neuerFehlerFehlertext.getText(), neuerFehlerFehlername.getText(), Integer.parseInt(neuerFehlerFehlernummer.getText()));
+ 
+        } catch (Exception e) {
+            exceptionOutput(e);
+        }
+        
+    }
     
+    @FXML
+    void neuerFehlerFertigungAuswahl(ActionEvent event) {
+        neuerFehlerLinie.getItems().addAll(neuerFehlerFertigung.getSelectionModel().getSelectedItem().getLinien());
+    }
+    
+    @FXML
+    void neuerFehlerLinieAuswahl(ActionEvent event) {
+        System.out.println("Auswahl");
+        neuerFehlerSteuerung.getItems().addAll(neuerFehlerLinie.getSelectionModel().getSelectedItem().getSteuerungen());
+        for(Steuerung st : neuerFehlerLinie.getSelectionModel().getSelectedItem().getSteuerungen()){
+            System.out.println(st.getName());
+        }
+    }
+    
+    @FXML
+    void neuerFehlerAuswahl(ActionEvent event){
+        try {
+            if(verwaltung.getCurrentUser() != 99){
+                // Keine Berechtigung
+                MessageBox.MessageBox.Show("Keine Berechtigung für diese Aktion (Neue Steuerung)!!!", "Zugriffsfehler");
+            } else {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/NeuerFehler.fxml"));
+                loader.setController(this);
+                AnchorPane paneNeueSteuerung = loader.load();
+                addTab(paneNeueSteuerung, "Neuer Fehler");
+            }
+            neuerFehlerFertigung.getItems().addAll(verwaltung.getFertigungList());
+        } catch (Exception e) {
+            exceptionOutput(e);
+        }
+    }
+    /*--------------------------------------------------------------------------
+    Bereich für Speichern
+    --------------------------------------------------------------------------*/
+    @FXML
+    void objekteSpeichern(ActionEvent event){
+        if(verwaltung.getCurrentUser() != 99){
+            // keine Berechtigung
+            MessageBox.MessageBox.Show("Keine Berechtigung für diese Aktion!!!", "Zugriffsfehler");
+        } else {
+            try {
+                // Hilfsdatenstruktur erstellen
+                VerwaltungSave verwaltungSave = new VerwaltungSave();
+                FileOutputStream fos = new FileOutputStream(pfadVerwaltung);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(verwaltung);
+                oos.close();
+                fos.close();
+            } catch (Exception e) {
+                exceptionOutput(e);
+            }
+        }
+    }
+    
+    private String pfadVerwaltung = "verwaltung.ser";
+    /*--------------------------------------------------------------------------
+    Bereich für Statistik
+    --------------------------------------------------------------------------*/
+    @FXML
+    void statistikAnzeigen(ActionEvent event){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/Statistik.fxml"));
+            loader.setController(this);
+            AnchorPane paneStatistik = loader.load();
+            addTab(paneStatistik, "Statistik");
+            borderPane.setBottom(null);
+            //borderPane.getBottom().setVisible(false);
+            
+            //consoleArea.setVisible(false);
+        } catch (Exception e) {
+            exceptionOutput(e);
+        }
+    }
+    
+    @FXML
+    BorderPane borderPane;
 }

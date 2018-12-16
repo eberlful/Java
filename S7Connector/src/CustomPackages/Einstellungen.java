@@ -13,15 +13,46 @@ import java.io.Serializable;
  */
 public class Einstellungen implements Serializable{
     private boolean console;
-    private boolean dbAktiv;
-    private String ipAdresseDB;
-    private int zykluszeit;
+    private boolean dbAktiv = true;
+    private String ipAdresseDB = "localhost";
+    private int zykluszeit = 100;
+    private boolean haeufigkeitsPruefung = false;
+
+    public boolean getHaeufigkeitsPruefung() {
+        return haeufigkeitsPruefung;
+    }
+
+    public void setHaeufigkeitsPruefung(boolean haeufigkeitsPruefung) {
+        this.haeufigkeitsPruefung = haeufigkeitsPruefung;
+    }
+
+    public String getIntervallHaeufigkeit() {
+        return Integer.toString(intervallHaeufigkeit);
+    }
+
+    public void setIntervallHaeufigkeit(int intervallHaeufigkeit) {
+        this.intervallHaeufigkeit = intervallHaeufigkeit;
+    }
+
+    public String getIntervallAnzahl() {
+        return Integer.toString(intervallAnzahl);
+    }
+
+    public void setIntervallAnzahl(int intervallAnzahl) {
+        this.intervallAnzahl = intervallAnzahl;
+    }
+    private int intervallHaeufigkeit;
+    private int intervallAnzahl;
 
     public Einstellungen(boolean console, boolean dbAktiv, String ipAdresseDB, int zykluszeit) {
         this.console = console;
         this.dbAktiv = dbAktiv;
         this.ipAdresseDB = ipAdresseDB;
         this.zykluszeit = zykluszeit;
+    }
+    
+    public Einstellungen(){
+        
     }
 
     public boolean isConsole() {
@@ -32,7 +63,7 @@ public class Einstellungen implements Serializable{
         this.console = console;
     }
 
-    public boolean isDbAktiv() {
+    public boolean getDbAktiv() {
         return dbAktiv;
     }
 

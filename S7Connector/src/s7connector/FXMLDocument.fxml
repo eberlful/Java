@@ -52,7 +52,7 @@
 
 <BorderPane id="BorderPane" fx:id="windowPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="799.0" prefWidth="1304.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="s7connector.FXMLDocumentController">
     <top>
-        <Ribbon>
+        <Ribbon fx:id="ribbon">
             <quickAccessBar>
                 <QuickAccessBar>
                     <buttons>
@@ -81,7 +81,7 @@
                 </QuickAccessBar>
             </quickAccessBar>
             <tabs>
-                <RibbonTab text="Home">
+                <RibbonTab fx:id="homeTab" text="Home">
                     <ribbonGroups>
                         <!--<RibbonGroup title="Datei">
                             <nodes>
@@ -419,7 +419,7 @@
                         </RibbonGroup>
                         <RibbonGroup>
                             <nodes>
-                                <Button fx:id="steuerungNeuerFehler" contentDisplay="TOP" onAction="#steuerungNeuerFehler" styleClass="big" text="Neuer Fehler" wrapText="true">
+                                <Button fx:id="steuerungNeuerFehler" contentDisplay="TOP" onAction="#neuerFehlerAuswahl" styleClass="big" text="Neuer Fehler" wrapText="true">
                                     <graphic>
                                         <ImageView>
                                             <Image url="@icons8-gefülltes-plus-40.png" />
@@ -518,11 +518,13 @@
                 </RibbonTab>
                 <RibbonTab text="Statistik">
                     <ribbonGroups>
-                        <RibbonGroup title="Wochenauswertung">
+                        <RibbonGroup prefWidth="320">
                             <nodes>
-                                <Button fx:id="statistikWochenauswertungStarten" contentDisplay="TOP" onAction="#wochenauswertungStarten" styleClass="big" text="Wochenauswertung Starten" wrapText="true">
+                                <Button id="statistikAnzeigen" fx:id="statistikAnzeigen" contentDisplay="TOP" onAction="#statistikAnzeigen" prefWidth="320" styleClass="big" text="Anzeigen" wrapText="true">
                                     <graphic>
-                                        <Image url="@icons8-aussteller-40.png" />
+                                        <ImageView>
+                                            <Image url="@icons8-automatisch-40.png" />
+                                        </ImageView>
                                     </graphic>
                                 </Button>
                             </nodes>
@@ -537,6 +539,17 @@
                                     <graphic>
                                         <ImageView>
                                             <Image url="@icons8-automatisch-40.png" />
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </nodes>
+                        </RibbonGroup>
+                        <RibbonGroup title="Konfig speichern" prefWidth="100">
+                            <nodes>
+                                <Button id="speichern" fx:id="speichern" contentDisplay="TOP" onAction="#objekteSpeichern" prefWidth="320" styleClass="big" text="Speichern" wrapText="true">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@icons8_File_48px_1.png" />
                                         </ImageView>
                                     </graphic>
                                 </Button>
@@ -731,7 +744,7 @@
    <center>
       <AnchorPane fx:id="content" BorderPane.alignment="CENTER">
          <children>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <center>
                   <StackPane fx:id="subPane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </center>

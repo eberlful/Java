@@ -14,8 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="624.0" prefWidth="962.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141">
+<AnchorPane id="AnchorPane" prefHeight="624.0" prefWidth="962.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -31,62 +30,62 @@
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="962.0" spacing="20.0">
                <children>
                   <Label text="Fehlername:" />
-                  <JFXTextField prefHeight="25.0" prefWidth="225.0" />
+                  <JFXTextField fx:id="neuerFehlerFehlername" prefHeight="25.0" prefWidth="225.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="962.0" spacing="20.0">
                <children>
                   <Label text="Fehlernummer:" />
-                  <JFXTextField prefHeight="25.0" prefWidth="225.0" />
+                  <JFXTextField fx:id="neuerFehlerFehlernummer" prefHeight="25.0" prefWidth="225.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="962.0" spacing="20.0">
                <children>
                   <Label text="Fehlertext:" />
-                  <JFXTextField prefHeight="25.0" prefWidth="257.0" />
+                  <JFXTextField fx:id="neuerFehlerFehlertext" prefHeight="25.0" prefWidth="257.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="962.0" spacing="20.0">
                <children>
                   <Label text="Fehlerart:" />
-                  <JFXCheckBox text="Datenbit" />
-                  <JFXCheckBox text="Merker" />
+                  <JFXCheckBox fx:id="neuerFehlerDB" onAction="#neuerFehlerDBCheckBoxChecked" text="Datenbit" />
+                  <JFXCheckBox fx:id="neuerFehlerM" onAction="#neuerFehlerMerkerCheckBoxChecked" text="Merker" />
                   <Label text="M" />
-                  <JFXTextField prefHeight="25.0" prefWidth="51.0" />
-                  <JFXTextField prefHeight="25.0" prefWidth="26.0" />
+                  <JFXTextField fx:id="neuerFehlerMerkerByte" prefHeight="25.0" prefWidth="51.0" />
+                  <JFXTextField fx:id="neuerFehlerMerkerBit" prefHeight="25.0" prefWidth="26.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="962.0" spacing="20.0">
                <children>
                   <Label text="DB" />
-                  <JFXTextField prefHeight="25.0" prefWidth="152.0" />
+                  <JFXTextField fx:id="neuerFehlerDatenbaustein" prefHeight="25.0" prefWidth="152.0" />
                   <Label text=".DBX" />
-                  <JFXTextField prefHeight="25.0" prefWidth="74.0" />
-                  <JFXTextField prefHeight="25.0" prefWidth="31.0" />
+                  <JFXTextField fx:id="neuerFehlerDBByte" prefHeight="25.0" prefWidth="74.0" />
+                  <JFXTextField fx:id="neuerFehlerDBBit" prefHeight="25.0" prefWidth="31.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="962.0" spacing="20.0">
                <children>
                   <Label text="Fertigung:" />
-                  <JFXComboBox prefHeight="25.0" prefWidth="259.0" />
+                  <JFXComboBox fx:id="neuerFehlerFertigung" onAction="#neuerFehlerFertigungAuswahl" prefHeight="25.0" prefWidth="259.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="962.0" spacing="20.0">
                <children>
                   <Label text="Linie:" />
-                  <JFXComboBox prefHeight="25.0" prefWidth="271.0" />
+                  <JFXComboBox fx:id="neuerFehlerLinie" onAction="#neuerFehlerLinieAuswahl" prefHeight="25.0" prefWidth="271.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="962.0" spacing="20.0">
                <children>
                   <Label text="Steuerung:" />
-                  <JFXComboBox prefHeight="25.0" prefWidth="259.0" />
+                  <JFXComboBox fx:id="neuerFehlerSteuerung" prefHeight="25.0" prefWidth="259.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="962.0" spacing="20.0">
                <children>
-                  <JFXToggleButton text="Überwachung" />
-                  <JFXButton prefHeight="40.0" prefWidth="160.0" text="Speichern" />
+                  <JFXToggleButton fx:id="neuerFehlerUeberwachung" text="Überwachung" />
+                  <JFXButton onAction="#neuerFehlerSpeichern" prefHeight="40.0" prefWidth="160.0" text="Speichern" />
                </children>
             </HBox>
          </children>

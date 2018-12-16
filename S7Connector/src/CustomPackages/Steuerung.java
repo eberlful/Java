@@ -7,6 +7,7 @@ package CustomPackages;
 
 import MessageBox.MessageBox;
 import Moka7.S7Client;
+import java.io.Serializable;
 import java.util.ArrayList;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -17,7 +18,7 @@ import javafx.scene.control.TreeItem;
  *
  * @author marku
  */
-public class Steuerung {
+public class Steuerung implements Serializable{
     private int modus; // 0 = Fertigung
     private ArrayList<Fehler> fehlerListe;
     private String ipAdresse;
@@ -37,7 +38,7 @@ public class Steuerung {
     private boolean runLast;
     
     // Propertys
-    private BooleanProperty status = new SimpleBooleanProperty();
+    private BooleanProperty status;// = new SimpleBooleanProperty();
 
     public Steuerung(int modus, String name) {
         this.modus = modus;

@@ -5,6 +5,7 @@
  */
 package CustomPackages;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import javafx.scene.control.TreeItem;
 
@@ -12,7 +13,7 @@ import javafx.scene.control.TreeItem;
  *
  * @author marku
  */
-public class Linie {
+public class Linie implements Serializable{
     private ArrayList<Steuerung> steuerungen = new ArrayList<Steuerung>();
     private Fertigung fertigung;
     private String name;
@@ -59,6 +60,10 @@ public class Linie {
     {
         System.out.println(steuerung.getName() + " in " + this.name + " eingefügt");
         steuerungen.add(steuerung);
+    }
+    
+    public ArrayList<Steuerung> getSteuerungen(){
+        return steuerungen;
     }
 
     public void deleteSteuerung(Steuerung steuerung)

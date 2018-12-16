@@ -77,3 +77,9 @@ Neue Steuerung
 #speichernNeueSteuerung.hover{
     -fx-background-color: grey;
 }
+/*------------------------------------------------------------------------------
+Einstellungen
+------------------------------------------------------------------------------*/
+#speichern{
+    -fx-min-width: 100px;
+}

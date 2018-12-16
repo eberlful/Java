@@ -1,17 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141">
+<AnchorPane id="AnchorPane" prefHeight="653.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXTabPane layoutX="126.0" layoutY="133.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <tabs>
             <Tab text="Allgemein">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="614.0" prefWidth="310.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="25.0" prefWidth="500.0" spacing="20.0">
+                                             <children>
+                                                <JFXToggleButton fx:id="einstellungenHaeufungToggle" text="Häufigkeitsvergleich">
+                                                   <contextMenu>
+                                                      <ContextMenu>
+                                                        <items>
+                                                          <MenuItem mnemonicParsing="false" text="Info" />
+                                                        </items>
+                                                      </ContextMenu>
+                                                   </contextMenu>
+                                                </JFXToggleButton>
+                                                <JFXToggleButton fx:id="einstellungenDatenbankToggle" text="Datenbank" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="33.0" prefWidth="500.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Fehler-Häufungsalarm:" />
+                                                <JFXTextField fx:id="einstellungenAnzahlHaeufung" prefHeight="25.0" prefWidth="62.0" />
+                                                <Label text="Zeitintervall in Tage:" />
+                                                <JFXTextField fx:id="einstellungenZeitinterval" prefHeight="25.0" prefWidth="62.0" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="33.0" prefWidth="500.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Datenbank IP-Adresse:" />
+                                                <JFXTextField fx:id="einstellungenIPDB" prefHeight="25.0" prefWidth="227.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="614.0" prefWidth="683.0">
+                                 <children>
+                                    <VBox alignment="CENTER" layoutY="-14.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-14.0">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="56.0" prefWidth="500.0" spacing="20.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Exit" />
+                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Speichern" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="56.0" prefWidth="500.0" spacing="20.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Exit" />
+                                                <Button mnemonicParsing="false" onAction="#einstellungenSpeichern" prefHeight="25.0" prefWidth="109.0" text="Speichern" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                          </items>
+                        </SplitPane>
+                     </children></AnchorPane>
               </content>
             </Tab>
             <Tab text="Datenbank">
