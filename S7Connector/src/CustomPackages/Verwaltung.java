@@ -15,9 +15,12 @@ import java.util.ArrayList;
 public class Verwaltung implements Serializable{
     private ArrayList<Steuerung> controlList = new ArrayList<Steuerung>();
     private ArrayList<Fertigung> fertigungList = new ArrayList<Fertigung>();
+    private ArrayList<Linie> linienList = new ArrayList<Linie>();
     private int currentUser;    // 99 = Root
     private String currentUserName = "";
     private Einstellungen einstellung;
+    private ArrayList<Fehler> ueberwachungsFehler = new ArrayList<Fehler>();
+    private ArrayList<Fehler> lastFehler = new ArrayList<Fehler>();
 
     public Verwaltung() {
         currentUser = 0;
@@ -32,6 +35,14 @@ public class Verwaltung implements Serializable{
         } else {
             return false;
         }
+    }
+
+    public void addLinie(Linie linie){
+        linienList.add(linie);
+    }
+
+    public ArrayList<Linie> getLinienListe(){
+        return this.linienList;
     }
     
     public Einstellungen getEinstellung(){

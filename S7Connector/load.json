@@ -1,0 +1,52 @@
+{
+    "Einstellung": {
+        "Pfad Datenbank": "192.168.1.1",
+        "Anzahl Fertigungen": 1,
+        "Anzahl Linien": 2,
+        "Anzahl Steuerungen": 1,
+        "Anzahl Fehler": 0
+    },
+    "Fertigung": [
+        {
+            "Name": "Test",
+            "Anzahl der Linien": 2,
+            "Linien": [
+                {
+                    "Name": "Linie 1",
+                    "Anzahl Steuerungen": 1,
+                    "Steuerungen": [
+                        {
+                            "Name": "Teststand",
+                            "IP": "192.168.1.1",
+                            "Rack": 0,
+                            "Slot": 2,
+                            "Datenbaustein": 1,
+                            "DB Byte": 1,
+                            "DB Bit": 1,
+                            "Ueberwachung": false,
+                            "Fertigung": "Test",
+                            "Linie": "Linie 1",
+                            "Anzahl Fehler": 0,
+                            "Fehler": [
+                                {
+                                    "Fehlername": "Speicherverwaltung",
+                                    "Fehlertext": "Speicherleck gefunden",
+                                    "Fehlernummer": 1,
+                                    "Ueberwachung": false,
+                                    "Datenbaustein": 1,
+                                    "DB Byte": 1,
+                                    "DB Bit": 1,
+                                    "Merkerbyte": 0,
+                                    "Merkerbit": 0,
+                                    "Art": 0,
+                                    "Letzter Fehler": "",
+                                    "Fehlercounter": 0
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

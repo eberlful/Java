@@ -55,6 +55,13 @@
                                                 <JFXTextField fx:id="einstellungenIPDB" prefHeight="25.0" prefWidth="227.0" />
                                              </children>
                                           </HBox>
+                                          <HBox alignment="CENTER" prefHeight="33.0" prefWidth="500.0" spacing="20.0">
+                                             <children>
+                                                <Label text="Pfad der Config-Datei:" />
+                                                <JFXTextField fx:id="einstellungenIPDB1" prefHeight="25.0" prefWidth="176.0" />
+                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Laden" />
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>

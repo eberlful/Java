@@ -10,8 +10,11 @@ import Moka7.S7Client;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -36,6 +39,7 @@ public class Steuerung implements Serializable{
     private boolean verbindungsStatus;
     private TreeItem<Steuerung> listViewItem;
     private boolean runLast;
+    private ListProperty<Fehler> fehlerProperty;
     
     // Propertys
     private BooleanProperty status;// = new SimpleBooleanProperty();
@@ -43,6 +47,22 @@ public class Steuerung implements Serializable{
     public Steuerung(int modus, String name) {
         this.modus = modus;
         this.name = name;
+    }
+    
+    public ListProperty<Fehler> getFehlerProperty(){
+        return fehlerProperty;
+    }
+    
+    public int getDatenbaustein(){
+        return this.datenbaustein;
+    }
+    
+    public int getDBByte(){
+        return this.dbByte;
+    }
+    
+    public int getDBBit(){
+        return this.dbBit;
     }
     
     @Override
@@ -102,10 +122,10 @@ public class Steuerung implements Serializable{
             client = new S7Client();
             this.verbindung = client.ConnectTo(this.ipAdresse, this.rack, this.slot);
             verbindungsStatus = client.Connected;
-            
+            fehlerProperty = new SimpleListProperty<Fehler>();
             //status.addListener(new ChangeListener<Boolean>);
         }
-    
+        
         public boolean checkOnline()
         {
             verbindungsStatus = client.Connected;
@@ -116,10 +136,10 @@ public class Steuerung implements Serializable{
             return linie;
         }
 
-//        public List<Fehler> getFehlerListe()
-//        {
-//            return this.fehlerListe;
-//        }
+        public ArrayList<Fehler> getFehlerListe()
+        {
+            return this.fehlerListe;
+        }
 
         public String getName()
         {
@@ -141,6 +161,8 @@ public class Steuerung implements Serializable{
             if(fehler != null)
             {
                 fehlerListe.add(fehler);
+                //fehlerProperty.add(fehler);
+                fehlerProperty.set(FXCollections.observableArrayList(fehlerListe));
                 System.out.println(fehler.getFehlername() + " hinzugefügt");
                 //Console.WriteLine("Es wurde eine NULL übergeben" + "Steuerung, addFehler");
             }

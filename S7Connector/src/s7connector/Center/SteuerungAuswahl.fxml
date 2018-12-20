@@ -3,10 +3,15 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -89,7 +94,63 @@
           </Tab>
           <Tab text="Fehler Allgemein">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <top>
+                              <MenuBar BorderPane.alignment="CENTER">
+                                <menus>
+                                  <Menu mnemonicParsing="false" text="File">
+                                    <items>
+                                      <MenuItem mnemonicParsing="false" text="Close" />
+                                    </items>
+                                  </Menu>
+                                  <Menu mnemonicParsing="false" text="Edit">
+                                    <items>
+                                      <MenuItem mnemonicParsing="false" text="Delete" />
+                                    </items>
+                                  </Menu>
+                                  <Menu mnemonicParsing="false" text="Help">
+                                    <items>
+                                      <MenuItem mnemonicParsing="false" text="About" />
+                                    </items>
+                                  </Menu>
+                                </menus>
+                              </MenuBar>
+                           </top>
+                           <center>
+                              <SplitPane dividerPositions="0.25096030729833546" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                       <children>
+                                          <SplitPane fx:id="steuerung" dividerPositions="0.6444007858546169" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <ListView fx:id="listViewFehlerSteuerungAuswahl" layoutX="-4.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <children>
+                                                            <Label text="Suche:" />
+                                                            <JFXTextField />
+                                                            <JFXButton prefHeight="43.0" prefWidth="166.0" text="Anwenden" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                                </items>
+                              </SplitPane>
+                           </center>
+                        </BorderPane>
+                     </children></AnchorPane>
             </content>
           </Tab>
             <Tab text="Fehler Historie">

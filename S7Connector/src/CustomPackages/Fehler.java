@@ -8,6 +8,7 @@ package CustomPackages;
 import Moka7.S7;
 import Moka7.S7Client;
 import java.util.Date;
+import javafx.beans.property.ListProperty;
 
 /**
  *
@@ -53,7 +54,10 @@ public class Fehler {
         return fehlername;
     }
     
-    
+    @Override
+    public String toString(){
+        return this.fehlername;
+    }
 
     public boolean checkZustand()
     {
@@ -142,4 +146,58 @@ public class Fehler {
             //Ueberwachung werfen
         }
     }
+
+    public boolean isUeberwachung() {
+        return ueberwachung;
+    }
+
+    public int getArt() {
+        return art;
+    }
+
+    public boolean isZustand() {
+        return zustand;
+    }
+
+    public int getDb() {
+        return db;
+    }
+
+    public int getDbByte() {
+        return dbByte;
+    }
+
+    public int getDbBit() {
+        return dbBit;
+    }
+
+    public int getMerkerByte() {
+        return merkerByte;
+    }
+
+    public int getMerkerBit() {
+        return merkerBit;
+    }
+
+    public String getFehlerText() {
+        return fehlerText;
+    }
+
+    public int getFehlernummer() {
+        return fehlernummer;
+    }
+
+    public static int getFehlerCounter() {
+        return fehlerCounter;
+    }
+
+    public String getPfadFehlerBehebung() {
+        return pfadFehlerBehebung;
+    }
+
+    public Date getLast() {
+        return last;
+    }
+    
+    
 }

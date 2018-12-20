@@ -553,6 +553,13 @@
                                         </ImageView>
                                     </graphic>
                                 </Button>
+                                <Button id="einstellungenLaden" fx:id="einstellungenLaden" contentDisplay="TOP" onAction="#objekteLaden" prefWidth="320" styleClass="big" text="Laden" wrapText="true">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@icons8_Open_48px_3.png" />
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
                             </nodes>
                         </RibbonGroup>
                     </ribbonGroups>

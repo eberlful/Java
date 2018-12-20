@@ -16,8 +16,10 @@ import javafx.scene.control.TreeItem;
 public class Fertigung implements Serializable{
     private Steuerung fertigung;
     private TreeItem<Steuerung> treeItem;
-    //private ArrayList<Steuerung> steuerungen = new ArrayList<Steuerung>();
-
+    private ArrayList<Steuerung> listeSteuerungen;
+    private ArrayList<Linie> linien;
+    private String name;
+    
     public String getName() {
         return name;
     }
@@ -25,12 +27,11 @@ public class Fertigung implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
-    private ArrayList<Steuerung> listeSteuerungen = new ArrayList<Steuerung>();
-    private ArrayList<Linie> linien = new ArrayList<Linie>();
-    private String name;
-    //private ListViewItem listViewItem;
+
     public Fertigung(String name, int anzahlLinien)
     {
+        listeSteuerungen = new ArrayList<Steuerung>();
+        linien = new ArrayList<Linie>();
         this.name = name;
         for (int i = 1; i <= anzahlLinien; i++)
         {

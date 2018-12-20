@@ -11,6 +11,9 @@ import CustomPackages.Fertigung;
 import CustomPackages.Linie;
 import CustomPackages.Steuerung;
 import CustomPackages.Verwaltung;
+import OriginalClass.FertigungSave;
+import OriginalClass.LinieSave;
+import OriginalClass.SteuerungSave;
 import OriginalClass.VerwaltungSave;
 import com.jfoenix.animation.alert.CenterTransition;
 import com.jfoenix.controls.JFXButton;
@@ -31,14 +34,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,7 +57,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -68,8 +79,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -130,31 +145,77 @@ public class FXMLDocumentController implements Initializable {
     private Accordion accSideBar;
     
     @FXML
+    private ListView<Fehler> listViewFehlerSteuerungAuswahl;
+    
+    private boolean normalClickIsAlreadySeen = false;
+    private Tab uebersichtsTab;
+    
+    @FXML
     public void treeViewClick(MouseEvent event) {
         TreeItem<Steuerung> item = treeView.getSelectionModel().getSelectedItem();
-        if (item != null) {
+        if (event.getClickCount() == 2) {
             try {
-                //FXMLLoader loader = FXMLLoader.load(getClass().getResource("Center/SteuerungAuswahl.fxml"));
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/SteuerungAuswahl.fxml"));
-                loader.setController(this);
-                AnchorPane pane = loader.load();
-                addTab(pane, item.getValue().getName());
-                nameSteuerungAuswahl.setText(item.getValue().toString());
-                ipAdresseSteuerungAuswahl.setText(item.getValue().getIP());
-                rackSteuerungAuswahl.setText(item.getValue().getRack());
-                slotSteuerungAuswahl.setText(item.getValue().getSlot());
-                funktionsbitSteuerungAuswahl.setText(item.getValue().getFunktionsbit());
-                aktuellerZustandSteuerungAuswahl.setText(item.getValue().getZustand());
-                steuerungenProperty.set(FXCollections.observableArrayList(item.getValue().getFertigung().getSteuerungen()));
-                accSideBar.setExpandedPane(titledPaneSteuerung);
-            } catch (Exception e) {
-                setConsoleColorRed();
-                consoleArea.appendText(new Date().toString() + ": " + e.getMessage() + "\n");
-                consoleArea.appendText(new Date().toString() + ": " + e.getStackTrace() + "\n");
-                setConsoleColorBlack();
+                    //FXMLLoader loader = FXMLLoader.load(getClass().getResource("Center/SteuerungAuswahl.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/SteuerungAuswahl.fxml"));
+                    loader.setController(this);
+                    AnchorPane pane = loader.load();
+                    addTab(pane, item.getValue().getName(), 1);
+                    nameSteuerungAuswahl.setText(item.getValue().toString());
+                    ipAdresseSteuerungAuswahl.setText(item.getValue().getIP());
+                    rackSteuerungAuswahl.setText(item.getValue().getRack());
+                    slotSteuerungAuswahl.setText(item.getValue().getSlot());
+                    funktionsbitSteuerungAuswahl.setText(item.getValue().getFunktionsbit());
+                    aktuellerZustandSteuerungAuswahl.setText(item.getValue().getZustand());
+                    steuerungenProperty.set(FXCollections.observableArrayList(item.getValue().getFertigung().getSteuerungen()));
+                    listViewFehlerSteuerungAuswahl.itemsProperty().bindBidirectional(item.getValue().getFehlerProperty());
+                    accSideBar.setExpandedPane(titledPaneSteuerung);
+                    normalClickIsAlreadySeen = true;
+                    //item.getValue().getFehlerProperty().set(FXCollections.observableArrayList(item.getValue().getFehlerListe()));
+                } catch (Exception e) {
+                    setConsoleColorRed();
+                    consoleArea.appendText(new Date().toString() + ": " + e.getMessage() + "\n");
+                    consoleArea.appendText(new Date().toString() + ": " + e.getStackTrace() + "\n");
+                    setConsoleColorBlack();
+                }
+        } else {
+            if (item != null && normalClickIsAlreadySeen == false) {
+                try {
+                    //FXMLLoader loader = FXMLLoader.load(getClass().getResource("Center/SteuerungAuswahl.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/SteuerungAuswahl.fxml"));
+                    loader.setController(this);
+                    AnchorPane pane = loader.load();
+                    addTab(pane, item.getValue().getName(), 1);
+                    nameSteuerungAuswahl.setText(item.getValue().toString());
+                    ipAdresseSteuerungAuswahl.setText(item.getValue().getIP());
+                    rackSteuerungAuswahl.setText(item.getValue().getRack());
+                    slotSteuerungAuswahl.setText(item.getValue().getSlot());
+                    funktionsbitSteuerungAuswahl.setText(item.getValue().getFunktionsbit());
+                    aktuellerZustandSteuerungAuswahl.setText(item.getValue().getZustand());
+                    steuerungenProperty.set(FXCollections.observableArrayList(item.getValue().getFertigung().getSteuerungen()));
+                    accSideBar.setExpandedPane(titledPaneSteuerung);
+                    normalClickIsAlreadySeen = true;
+                } catch (Exception e) {
+                    setConsoleColorRed();
+                    consoleArea.appendText(new Date().toString() + ": " + e.getMessage() + "\n");
+                    consoleArea.appendText(new Date().toString() + ": " + e.getStackTrace() + "\n");
+                    setConsoleColorBlack();
+                }
+            } else if (item != null && normalClickIsAlreadySeen == true) {
+                try {
+                    uebersichtsTab.setText(item.getValue().getName());
+                    nameSteuerungAuswahl.setText(item.getValue().toString());
+                    ipAdresseSteuerungAuswahl.setText(item.getValue().getIP());
+                    rackSteuerungAuswahl.setText(item.getValue().getRack());
+                    slotSteuerungAuswahl.setText(item.getValue().getSlot());
+                    funktionsbitSteuerungAuswahl.setText(item.getValue().getFunktionsbit());
+                    aktuellerZustandSteuerungAuswahl.setText(item.getValue().getZustand());
+                    steuerungenProperty.set(FXCollections.observableArrayList(item.getValue().getFertigung().getSteuerungen()));
+                    accSideBar.setExpandedPane(titledPaneSteuerung);
+                } catch (Exception e) {
+                    exceptionOutput(e);
+                }
             }
-        }
-        
+        } 
     }
     
     @FXML
@@ -452,6 +513,13 @@ public class FXMLDocumentController implements Initializable {
         steuerungenProperty.set(FXCollections.observableArrayList());
     }
     
+    private void addTab(AnchorPane pane, String name, int modus){
+        addTab(pane, name);
+        if (modus == 1) {
+            uebersichtsTab = tabControllPane.getTabs().get(tabControllPane.getTabs().size()-1);
+        }
+    }
+    
     private void addTab(AnchorPane pane, String name){
         if (first) {
             initTabSystem(pane, name);
@@ -460,6 +528,9 @@ public class FXMLDocumentController implements Initializable {
                 System.out.println("Aus und Vorbei");
                 if(borderPane.getBottom() == null){
                     borderPane.setBottom(consoleArea);
+                }
+                if (firstTab == uebersichtsTab) {
+                    normalClickIsAlreadySeen = false;
                 }
             });
             firstTab.setClosable(true);
@@ -473,6 +544,9 @@ public class FXMLDocumentController implements Initializable {
                 System.out.println("Aus und Vorbei");
                 if(borderPane.getBottom() == null){
                     borderPane.setBottom(consoleArea);
+                }
+                if (newTab == uebersichtsTab) {
+                    normalClickIsAlreadySeen = false;
                 }
             });
             newTab.setClosable(true);
@@ -777,7 +851,9 @@ public class FXMLDocumentController implements Initializable {
         try {
             int art = 0;
             Fehler fehler = new Fehler(neuerFehlerSteuerung.getSelectionModel().getSelectedItem(), neuerFehlerUeberwachung.isSelected(), Integer.parseInt(neuerFehlerDatenbaustein.getText()), Integer.parseInt(neuerFehlerDBByte.getText()), Integer.parseInt(neuerFehlerDBBit.getText()), art, Integer.parseInt(neuerFehlerMerkerByte.getText()), Integer.parseInt(neuerFehlerMerkerBit.getText()), neuerFehlerFehlertext.getText(), neuerFehlerFehlername.getText(), Integer.parseInt(neuerFehlerFehlernummer.getText()));
- 
+            neuerFehlerSteuerung.getSelectionModel().getSelectedItem().addFehler(fehler);
+            Tab deleteTab = tabControllPane.getSelectionModel().getSelectedItem();
+            tabControllPane.getTabs().remove(deleteTab);
         } catch (Exception e) {
             exceptionOutput(e);
         }
@@ -816,7 +892,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     /*--------------------------------------------------------------------------
-    Bereich für Speichern
+    Bereich für Speichern / Laden
     --------------------------------------------------------------------------*/
     @FXML
     void objekteSpeichern(ActionEvent event){
@@ -827,11 +903,125 @@ public class FXMLDocumentController implements Initializable {
             try {
                 // Hilfsdatenstruktur erstellen
                 VerwaltungSave verwaltungSave = new VerwaltungSave();
-                FileOutputStream fos = new FileOutputStream(pfadVerwaltung);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(verwaltung);
-                oos.close();
-                fos.close();
+//                FileOutputStream fos = new FileOutputStream(pfadVerwaltung);
+                consoleArea.appendText(new Date().toString() + ": Laden der Config-Datei von - " + pfadVerwaltung);
+//                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                StringProperty stringProperty = new SimpleStringProperty();
+                consoleArea.textProperty().bindBidirectional(stringProperty);
+                CustomPackages.ObjectWriter obW = new CustomPackages.ObjectWriter(verwaltung, pfadVerwaltung, stringProperty);
+                obW.start();
+//                for(Fertigung localFertigung : verwaltung.getFertigungList()){
+//                    FertigungSave localFertigungSave = new FertigungSave(localFertigung.getName(), localFertigung.getLinien().size());
+//                    consoleArea.appendText(new Date().toString() + ": Sicherung Fertigung - " + localFertigung.getName() + " mit " + localFertigung.getLinien().size() + " Linien erstellt");
+//                    for(Linie localLinie : localFertigung.getLinien()){
+//                        for(Steuerung localSteuerung : localLinie.getSteuerungen()){
+//                            for(Fehler localFehler : localSteuerung.getFehlerListe()){
+//                                
+//                            }
+//                        }
+//                    }
+//                }
+//                oos.writeObject(verwaltung);
+//                oos.close();
+//                fos.close();
+            } catch (Exception e) {
+                exceptionOutput(e);
+            }
+        }
+    }
+    // Sicher ab das nicht ungewollt eine Konfig geladen wird
+    private boolean isAllreadyLoad = true;
+    
+    @FXML
+    void objekteLaden(ActionEvent event){
+        if(verwaltung.getCurrentUser() != 99){
+            // keine Berechtigung
+            MessageBox.MessageBox.Show("Keine Berechtigung für diese Aktion!!!", "Zugriffsfehler");
+        } else {
+            try {
+                checkLoadConfig(pfadJSON);
+                
+                System.out.println("Load");
+//                if (isAllreadyLoad) {
+//                    Alert alert = new Alert(AlertType.CONFIRMATION);
+//                    alert.setTitle("Konfig laden ???");
+//                    alert.setHeaderText("Vorsicht, Config-Konflikt");
+//                    alert.setContentText("Es wurde schon eine Konfiguration geladen. Sind Sie sicher, dass Sie diese überladen wollen ?");
+//                    ButtonType buttonJa = new ButtonType("Ja");
+//                    ButtonType buttonNein = new ButtonType("Nein");
+//                    alert.getButtonTypes().setAll(buttonJa, buttonNein);
+//                    Optional<ButtonType> result = alert.showAndWait();
+//                    if (result.get() == buttonJa) {
+//                        FileChooser fileChooser = new FileChooser();
+//                        fileChooser.setTitle("Config laden");
+//                        fileChooser.getExtensionFilters().addAll(
+//                            new ExtensionFilter("Analyse Core", "*.ser"),
+//                            new ExtensionFilter("Datenbankdatei", "*.dat"/*, "*.jpg", "*.gif"*/),
+//                            //new ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"),
+//                            new ExtensionFilter("Alle Dateien", "*.*"));
+//                        File selectedFile = fileChooser.showOpenDialog(borderPane.getScene().getWindow());
+//                        if (selectedFile != null) {
+//                            consoleArea.appendText(selectedFile.getAbsolutePath() + "\n");
+//                        }
+//                        FileInputStream fis = new FileInputStream(selectedFile.getAbsolutePath());
+//                        ObjectInputStream ois = new ObjectInputStream(fis);
+//                        VerwaltungSave verwaltungSave = (VerwaltungSave)ois.readObject();
+//                        Verwaltung verwaltung = new Verwaltung();
+//                        for(FertigungSave localFertigungSave : verwaltungSave.getFertigungList()){
+//                            Fertigung localFertigung = new Fertigung(localFertigungSave.getName(), localFertigungSave.getLinien().size());
+//                            verwaltung.addFertigung(localFertigung);
+//                            consoleArea.appendText(new Date().toString() + ": neue Fertigung - " + localFertigung.getName() + "\n");
+//                            Steuerung fSteuerung = new Steuerung(0, fertigungName.getText());
+//                            TreeItem<Steuerung> newFertigung = new TreeItem<Steuerung>(fSteuerung);
+//                            newFertigung.setExpanded(true);
+//                            localFertigung.setFertigung(fSteuerung);
+//                            localFertigung.setTreeItem(newFertigung);
+//                            multiRoot.getChildren().add(newFertigung);
+//                            for(Linie linie : localFertigung.getLinien()){
+//                                Steuerung lSteuerung = new Steuerung(2, linie.toString());
+//                                TreeItem<Steuerung> item = new TreeItem<Steuerung>(lSteuerung);
+//                                newFertigung.getChildren().add(item);
+//                                linie.setItem(item);
+//                            }
+//                            int counter = 0;
+//                            for(LinieSave localLinieSave : localFertigungSave.getLinien()){
+//                                for(SteuerungSave localSteuerungSave : localLinieSave.getSteuerungen()){
+//                                    Steuerung steuerung = new Steuerung(localSteuerungSave.getIP(), Integer.parseInt(localSteuerungSave.getRack()), Integer.parseInt(localSteuerungSave.getSlot()), localSteuerungSave.getName(), localFertigung, localSteuerungSave.getDatenbaustein(), localSteuerungSave.getDbByte(), localSteuerungSave.getDbBit(), localFertigung.getLinien().get(counter));
+//                                    consoleArea.appendText(new Date().toString() + ": Neue Steuerung - " + steuerung.toString() + ", " + steuerung.getName() + ", " + steuerung.getIP() + "\n");
+//                                    verwaltung.addSteuerung(steuerung);
+//                                    TreeItem<Steuerung> newSteuerung = new TreeItem<Steuerung>(steuerung);
+//                                    steuerung.setListViewItem(newSteuerung);
+//                                    steuerung.getFertigung().addSteuerung(steuerung);
+//                                    steuerung.getLinie().addSteuerung(steuerung);
+//                                    steuerung.getLinie().getTreeItem().setExpanded(true);
+//                                    steuerung.getLinie().getTreeItem().getChildren().add(newSteuerung);
+//                                    consoleArea.appendText(new Date().toString() + ": neue Steuerung - " + steuerung.getName() + "\n");
+//                                    counter++;
+//                                }
+//                            }
+//                        }
+//                    } else if (result.get() == buttonNein) {
+//                        setConsoleColorRed();
+//                        writeConsole("Ladevorgang abgebrochen!!!");
+//                        setConsoleColorBlack();
+//                    }
+//                } else {
+//                    FileChooser fileChooser = new FileChooser();
+//                    fileChooser.setTitle("Config laden");
+//                    fileChooser.getExtensionFilters().addAll(
+//                        new ExtensionFilter("Analyse Core", "*.ser"),
+//                        new ExtensionFilter("Datenbankdatei", "*.dat"/*, "*.jpg", "*.gif"*/),
+//                        //new ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"),
+//                        new ExtensionFilter("Alle Dateien", "*.*"));
+//                    File selectedFile = fileChooser.showOpenDialog(borderPane.getScene().getWindow());
+//                    if (selectedFile != null) {
+//                        consoleArea.appendText(selectedFile.getAbsolutePath() + "\n");
+//                    }
+//                    FileInputStream fis = new FileInputStream(selectedFile.getAbsolutePath());
+//                    ObjectInputStream ois = new ObjectInputStream(fis);
+//                    VerwaltungSave verwaltungSave = (VerwaltungSave)ois.readObject();
+//                    // fehlt etwas
+//                }
             } catch (Exception e) {
                 exceptionOutput(e);
             }
@@ -860,4 +1050,100 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     BorderPane borderPane;
+    
+    /*--------------------------------------------------------------------------
+    Bereich für JSON-Lade-Speicher-Struktur
+    --------------------------------------------------------------------------*/
+    private String pfadJSON = "load.json";
+    private boolean configIsLoaded = false;
+    
+    private void checkLoadConfig(String pfad){
+        if (configIsLoaded) {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Konfig laden ???");
+            alert.setHeaderText("Vorsicht, Config-Konflikt");
+            alert.setContentText("Es wurde schon eine Konfiguration geladen. Sind Sie sicher, dass Sie diese überladen wollen ?");
+            ButtonType buttonJa = new ButtonType("Ja");
+            ButtonType buttonNein = new ButtonType("Nein");
+            alert.getButtonTypes().setAll(buttonJa, buttonNein);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == buttonJa) {
+                loadConfigJASON(pfad);
+            }
+        } else {
+            loadConfigJASON(pfad);
+        }
+    }
+    
+    private void loadConfigJASON(String pfad){
+        try {
+            File file = new File(pfad);
+            String content = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
+            JSONObject json = new JSONObject(content);
+            JSONObject einstellungen = json.getJSONObject("Einstellung");
+            writeConsole(Integer.toString(einstellungen.getInt("Anzahl Fertigungen")));
+            int countFertiung = einstellungen.getInt("Anzahl Fertigungen");
+            int countLinien = einstellungen.getInt("Anzahl Linien");
+            int countSteuerungen = einstellungen.getInt("Anzahl Steuerungen");
+            int countFehler = einstellungen.getInt("Anzahl Fehler");
+            writeConsole("Es wurden folgende Objekte gefunden.");
+            writeConsole("Anzahl Fertigungen: " + countFertiung);
+            writeConsole("Anzahl Linien: " + countLinien);
+            writeConsole("Anzahl Steuerungen: " + countSteuerungen);
+            writeConsole("Anzahl Fehler: " + countFehler);
+            JSONArray jSONArray = json.getJSONArray("Fertigung");
+            Verwaltung localVerwaltung = new Verwaltung();
+            for (int i = 0; i < jSONArray.length(); i++) {
+                JSONObject object = jSONArray.getJSONObject(i);
+                writeConsole("Neue Fertiung: " + object.getString("Name"));
+                Fertigung localFertigung = new Fertigung(object.getString("Name"), object.getInt("Anzahl der Linien"));
+                verwaltung.addFertigung(localFertigung);
+                Steuerung fSteuerung = new Steuerung(0, localFertigung.getName());
+                TreeItem<Steuerung> newFertigung = new TreeItem<Steuerung>(fSteuerung);
+                newFertigung.setExpanded(true);
+                localFertigung.setFertigung(fSteuerung);
+                localFertigung.setTreeItem(newFertigung);
+                multiRoot.getChildren().add(newFertigung);
+                if(object.getInt("Anzahl der Linien") > 0){
+                    for(Linie linie : localFertigung.getLinien()){
+                        TreeItem<Steuerung> item = new TreeItem<Steuerung>(linie.getSteuerungItem());
+                        newFertigung.getChildren().add(item);
+                        linie.setItem(item);
+                    }
+                }
+                JSONArray linien = object.getJSONArray("Linien");
+                for (int j = 0; j < linien.length(); j++) {
+                    JSONObject linieNObject = linien.getJSONObject(j);
+                    JSONArray steuerungJSONArray = linieNObject.getJSONArray("Steuerungen");
+                    for (int k = 0; k < steuerungJSONArray.length(); k++) {
+                        JSONObject steuerungObject = steuerungJSONArray.getJSONObject(k);
+                        Steuerung localSteuerung = new Steuerung(steuerungObject.getString("IP"), steuerungObject.getInt("Rack"), steuerungObject.getInt("Slot"), steuerungObject.getString("Name"), localFertigung, steuerungObject.getInt("Datenbaustein"), steuerungObject.getInt("DB Byte"), steuerungObject.getInt("DB Bit"), localFertigung.getLinien().get(k));
+                        verwaltung.addSteuerung(localSteuerung);
+                        TreeItem<Steuerung> newSteuerung = new TreeItem<Steuerung>(localSteuerung);
+                        localSteuerung.setListViewItem(newSteuerung);
+                        localSteuerung.getFertigung().addSteuerung(localSteuerung);
+                        localSteuerung.getLinie().addSteuerung(localSteuerung);
+                        localSteuerung.getLinie().getTreeItem().setExpanded(true);
+                        localSteuerung.getLinie().getTreeItem().getChildren().add(newSteuerung);
+                        JSONArray fehlerJsonArray = steuerungObject.getJSONArray("Fehler");
+                        for (int l = 0; l < fehlerJsonArray.length(); l++) {
+                            // Fehler
+                        }
+                    }
+                }
+            }
+            //JSONObject object = (JSONObject) jSONArray.get(0);
+            //writeConsole(object.getString("Name"));
+        } catch (Exception e) {
+            exceptionOutput(e);
+        }
+    }
+    
+    private void saveConfigFertigung(String pfad){
+        try {
+            JSONObject object = new JSONObject();
+            
+        } catch (Exception e) {
+        }
+    }
 }
