@@ -562,6 +562,17 @@
                                 </Button>
                             </nodes>
                         </RibbonGroup>
+                        <RibbonGroup title="Konfig speichern" prefWidth="100">
+                            <nodes>
+                                <Button id="beenden" fx:id="beenden" contentDisplay="TOP" onAction="#anwendungBeenden" prefWidth="320" styleClass="big" text="Beenden" wrapText="true">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@icons8-herunterfahren-40.png" />
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </nodes>
+                        </RibbonGroup>
                     </ribbonGroups>
                 </RibbonTab>
                 <!--<RibbonTab text="Animation">

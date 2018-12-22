@@ -168,6 +168,7 @@ public class FXMLDocumentController implements Initializable {
                     aktuellerZustandSteuerungAuswahl.setText(item.getValue().getZustand());
                     steuerungenProperty.set(FXCollections.observableArrayList(item.getValue().getFertigung().getSteuerungen()));
                     listViewFehlerSteuerungAuswahl.itemsProperty().bindBidirectional(item.getValue().getFehlerProperty());
+                    listViewFehlerSteuerungAuswahl.getItems().addAll(item.getValue().getFehlerListe());
                     accSideBar.setExpandedPane(titledPaneSteuerung);
                     normalClickIsAlreadySeen = true;
                     //item.getValue().getFehlerProperty().set(FXCollections.observableArrayList(item.getValue().getFehlerListe()));
@@ -192,6 +193,7 @@ public class FXMLDocumentController implements Initializable {
                     funktionsbitSteuerungAuswahl.setText(item.getValue().getFunktionsbit());
                     aktuellerZustandSteuerungAuswahl.setText(item.getValue().getZustand());
                     steuerungenProperty.set(FXCollections.observableArrayList(item.getValue().getFertigung().getSteuerungen()));
+                    listViewFehlerSteuerungAuswahl.getItems().addAll(item.getValue().getFehlerListe());
                     accSideBar.setExpandedPane(titledPaneSteuerung);
                     normalClickIsAlreadySeen = true;
                 } catch (Exception e) {
@@ -210,6 +212,7 @@ public class FXMLDocumentController implements Initializable {
                     funktionsbitSteuerungAuswahl.setText(item.getValue().getFunktionsbit());
                     aktuellerZustandSteuerungAuswahl.setText(item.getValue().getZustand());
                     steuerungenProperty.set(FXCollections.observableArrayList(item.getValue().getFertigung().getSteuerungen()));
+                    listViewFehlerSteuerungAuswahl.getItems().addAll(item.getValue().getFehlerListe());
                     accSideBar.setExpandedPane(titledPaneSteuerung);
                 } catch (Exception e) {
                     exceptionOutput(e);
@@ -1128,6 +1131,9 @@ public class FXMLDocumentController implements Initializable {
                         JSONArray fehlerJsonArray = steuerungObject.getJSONArray("Fehler");
                         for (int l = 0; l < fehlerJsonArray.length(); l++) {
                             // Fehler
+                            JSONObject fehlerObject = fehlerJsonArray.getJSONObject(l);
+                            Fehler fehler = new Fehler(localSteuerung, fehlerObject.getBoolean("Ueberwachung"), fehlerObject.getInt("Datenbaustein"), fehlerObject.getInt("DB Byte"), fehlerObject.getInt("DB Bit"), fehlerObject.getInt("Art"), fehlerObject.getInt("Merkerbyte"), fehlerObject.getInt("Merkerbit"), fehlerObject.getString("Fehlertext"), fehlerObject.getString("Fehlername"), fehlerObject.getInt("Fehlernummer"));
+                            localSteuerung.addFehler(fehler);
                         }
                     }
                 }
@@ -1145,5 +1151,30 @@ public class FXMLDocumentController implements Initializable {
             
         } catch (Exception e) {
         }
+    }
+    
+    /*--------------------------------------------------------------------------
+    Bereich für Beenden
+    --------------------------------------------------------------------------*/
+    @FXML
+    private void anwendungBeenden(ActionEvent event){
+        if (verwaltung.getCurrentUser() != 99) {
+            // Keine Berechtigung
+            MessageBox.MessageBox.Show("Keine Berechtigung für diese Aktion (Beenden)!!!", "Zugriffsfehler");
+        } else {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Anwendung Beenden ?");
+            alert.setHeaderText("Sind Sie sicher, dass Sie die Anwendung und damit alle Aufzeichnungsprozesse beenden wollen ?");
+            alert.setContentText("Sind Sie sicher, dass Sie die Anwendung und damit alle Aufzeichnungsprozesse beenden wollen ?");
+            ButtonType buttonJa = new ButtonType("Ja, ohne Sicherung");
+            ButtonType buttonNein = new ButtonType("Nein");
+            ButtonType buttonJaMitSave = new ButtonType("Ja, mit Sicherung");
+            alert.getButtonTypes().setAll(buttonJa, buttonNein, buttonJaMitSave);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == buttonJa) {
+                System.exit(0);
+            }
+        }
+        
     }
 }
