@@ -31,11 +31,23 @@ Ribbontab -> Home
     -fx-min-width: 140px;
 }
 
-#steuerungVerwaltenLöschen{
+#steuerungVerwaltenLoeschen{
+    -fx-min-width: 100px;
+}
+
+#steuerungVerwaltenVCard{
     -fx-min-width: 100px;
 }
 
 #steuerungZustandStart{
+    -fx-min-width: 100px;
+}
+
+#steuerungNeuerFehler{
+    -fx-min-width: 100px;
+}
+
+#steuerungFehleruebersicht{
     -fx-min-width: 100px;
 }
 
@@ -51,8 +63,32 @@ Ribbontab -> Home
     -fx-min-width: 140px;
 }
 
+#fertigungZustandStart{
+    -fx-min-width: 100px;
+}
+
+#fertigungZustandStopp{
+    -fx-min-width: 100px;
+}
+
+#statistikAnzeigen{
+    -fx-min-width: 100px;
+}
+
 #einstellungenAnzeigen{
     -fx-min-width: 140px;
+}
+
+#einstellungenSpeichern{
+    -fx-min-width: 100px;
+}
+
+#einstellungenLaden{
+    -fx-min-width: 100px;
+}
+
+#einstellungBeenden{
+    -fx-min-width: 100px;
 }
 
 #benutzerverwaltungAnmeldungAnmelden{
@@ -67,8 +103,16 @@ Ribbontab -> Home
     -fx-min-width: 140px;
 }
 
-#benutzerverwaltungVerwaltenBenutzerLöschen{
+#benutzerverwaltungVerwaltenBenutzerLoeschen{
     -fx-min-width: 140px;
+}
+
+#benutzerverwaltungVerwaltenVCard{
+    -fx-min-width: 100px;
+}
+
+#benutzerverwaltungUebersicht{
+    -fx-min-width: 100px;
 }
 
 /*------------------------------------------------------------------------------

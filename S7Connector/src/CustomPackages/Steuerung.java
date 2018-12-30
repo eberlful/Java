@@ -122,6 +122,9 @@ public class Steuerung implements Serializable{
             client = new S7Client();
             this.verbindung = client.ConnectTo(this.ipAdresse, this.rack, this.slot);
             verbindungsStatus = client.Connected;
+            if (verbindungsStatus == false) {
+                
+            }
             fehlerProperty = new SimpleListProperty<Fehler>();
             //status.addListener(new ChangeListener<Boolean>);
         }

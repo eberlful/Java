@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXToggleButton?>
@@ -21,20 +22,37 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.18886679920477137" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="614.0" prefWidth="310.0">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <JFXListView fx:id="einstellungenListView" onMouseClicked="#einstellungListViewClicked" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane fx:id="einstellungenAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="614.0" prefWidth="683.0">
+                                 <children>
+                                    <VBox alignment="CENTER" layoutY="-14.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-14.0">
                                        <children>
+                                          <HBox alignment="CENTER" prefHeight="56.0" prefWidth="500.0" spacing="20.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Exit" />
+                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Speichern" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="56.0" prefWidth="500.0" spacing="20.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Exit" />
+                                                <Button mnemonicParsing="false" onAction="#einstellungenSpeichern" prefHeight="25.0" prefWidth="109.0" text="Speichern" />
+                                             </children>
+                                          </HBox>
                                           <HBox alignment="CENTER" prefHeight="25.0" prefWidth="500.0" spacing="20.0">
                                              <children>
-                                                <JFXToggleButton fx:id="einstellungenHaeufungToggle" text="Häufigkeitsvergleich">
+                                                <JFXToggleButton fx:id="einstellungenHaeufungToggle" text="Intervallmodus">
                                                    <contextMenu>
                                                       <ContextMenu>
-                                                        <items>
-                                                          <MenuItem mnemonicParsing="false" text="Info" />
-                                                        </items>
+                                                         <items>
+                                                            <MenuItem mnemonicParsing="false" text="Info" />
+                                                         </items>
                                                       </ContextMenu>
                                                    </contextMenu>
                                                 </JFXToggleButton>
@@ -60,26 +78,6 @@
                                                 <Label text="Pfad der Config-Datei:" />
                                                 <JFXTextField fx:id="einstellungenIPDB1" prefHeight="25.0" prefWidth="176.0" />
                                                 <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Laden" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="614.0" prefWidth="683.0">
-                                 <children>
-                                    <VBox alignment="CENTER" layoutY="-14.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-14.0">
-                                       <children>
-                                          <HBox alignment="CENTER" prefHeight="56.0" prefWidth="500.0" spacing="20.0">
-                                             <children>
-                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Exit" />
-                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Speichern" />
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER" prefHeight="56.0" prefWidth="500.0" spacing="20.0">
-                                             <children>
-                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" text="Exit" />
-                                                <Button mnemonicParsing="false" onAction="#einstellungenSpeichern" prefHeight="25.0" prefWidth="109.0" text="Speichern" />
                                              </children>
                                           </HBox>
                                        </children>

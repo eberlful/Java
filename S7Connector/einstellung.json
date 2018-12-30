@@ -1,0 +1,30 @@
+{
+    "Einstellung": {
+        "Pfad Datenbank": "localhost",
+        "Datenbank Aktiv": true,
+        "Intervallmodus": true,
+        "Zeitintervall in Tage": 10,
+        "Intervallfehlerzaehler": 10,
+        "Pfad Konfiguration": "load.json",
+        "Verschleißmodus": true,
+        "Verschleißzaehler": 10,
+        "ListeView": [
+            {
+                "Name": "Allgemein",
+                "Bild": "C:\\Users\\marku\\OneDrive\\Desktop\\Java\\S7Connector\\src\\s7connector\\icons8_Location_16px.png"
+            },
+            {
+                "Name": "Datenbank",
+                "Bild": "C:\\Users\\marku\\OneDrive\\Desktop\\Java\\S7Connector\\src\\s7connector\\icons8_Location_16px.png"
+            },
+            {
+                "Name": "System",
+                "Bild": "C:\\Users\\marku\\OneDrive\\Desktop\\Java\\S7Connector\\src\\s7connector\\icons8_Location_16px.png"
+            },
+            {
+                "Name": "Benutzer",
+                "Bild": "C:\\Users\\marku\\OneDrive\\Desktop\\Java\\S7Connector\\src\\s7connector\\icons8_Location_16px.png"
+            }
+        ]
+    }
+}

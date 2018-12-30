@@ -5,16 +5,21 @@
  */
 package s7connector;
 
+import CustomPackages.Verwaltung;
 import com.pixelduke.control.Ribbon;
 import com.pixelduke.control.ribbon.RibbonGroup;
 import com.pixelduke.control.ribbon.RibbonTab;
 import java.io.FileInputStream;
 import java.net.URL;
+import java.util.Optional;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -22,6 +27,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -59,9 +66,29 @@ public class S7Connector extends Application {
         Parent root = FXMLLoader.load(resource);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Center/ButtonStyle.css").toExternalForm());
+        //setUserAgentStylesheet(STYLESHEET_MODENA);
         //new JMetro(JMetro.Style.LIGHT).applyTheme(scene);
 //        ScenicView.show(scene);
         primaryStage.setScene(scene);
+       // primaryStage.initStyle(StageStyle.UNDECORATED);
+        //primaryStage.setFullScreen(false);
+        primaryStage.setOnCloseRequest((event) -> {
+            if (event.getEventType() == WindowEvent.WINDOW_CLOSE_REQUEST) {
+                MessageBox.MessageBox.Show("Die Anwendung kann nicht ohne weiteres beendet werden !!!", "Zugriffsfehler");
+//                Alert alert = new Alert(AlertType.WARNING);
+//                alert.setTitle("Anwendung beenden ?");
+//                alert.setHeaderText("Sind Sie sicher, dass Sie diese Anwendung beenden wollen ?");
+//                ButtonType buttonJa = new ButtonType("Ja");
+//                ButtonType buttonNein = new ButtonType("Nein");
+//                alert.getButtonTypes().setAll(buttonJa, buttonNein);
+//                Optional<ButtonType> result = alert.showAndWait();
+//                if (result.get() == buttonJa) {
+//                    
+//                }
+                event.consume();
+            }
+            System.out.println(event.toString());
+        });
         primaryStage.setMaximized(true);
         primaryStage.show();
     }

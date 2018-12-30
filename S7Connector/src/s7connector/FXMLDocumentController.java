@@ -5,6 +5,8 @@
  */
 package s7connector;
 
+import CustomPackages.Benutzer;
+import CustomPackages.EinstellungItem;
 import CustomPackages.Einstellungen;
 import CustomPackages.Fehler;
 import CustomPackages.Fertigung;
@@ -19,6 +21,7 @@ import com.jfoenix.animation.alert.CenterTransition;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -39,6 +42,7 @@ import java.nio.file.Paths;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.BooleanProperty;
@@ -55,6 +59,7 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
@@ -72,12 +77,16 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -101,6 +110,16 @@ public class FXMLDocumentController implements Initializable {
     // Speichert die aktuelle ausgewählte Steuerung
     private Steuerung currentSteuerung;
     private String pfadEinstellung = "einstellung.ser";
+    private ArrayList<Label> einstellungenListe = new ArrayList<Label>();
+    // Einstellungen
+    private String datenbankPfad = null;
+    private boolean dbAktiv = false;
+    private boolean intervallModus = false;
+    private int zeitIntervallInTage = 0;
+    private int zeitIntervallzaehler = 0;
+    private String configPfad = "config.json";
+    private boolean verschleißmodus = false;
+    private int verschleißzaehler = 0;
     
     @FXML
     private JFXTreeView<Steuerung> treeView;
@@ -221,6 +240,10 @@ public class FXMLDocumentController implements Initializable {
         } 
     }
     
+    /*--------------------------------------------------------------------------
+    Bereich für Einstellungen
+    --------------------------------------------------------------------------*/
+    
     @FXML
     private JFXToggleButton einstellungenHaeufungToggle;
 
@@ -235,6 +258,24 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private JFXTextField einstellungenIPDB;
+    
+    @FXML
+    private AnchorPane einstellungenAnchorPane;
+    
+    @FXML
+    void einstellungenDatenbankSpeichern(ActionEvent event) {
+
+    }
+
+    @FXML
+    void einstellungenDatenbankVerbindungstestStarten(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void einstellungenAllgemeinSpeichern(ActionEvent event) {
+
+    }
     
     @FXML void einstellungenSpeichern(ActionEvent event){
         FileOutputStream fos;
@@ -260,6 +301,9 @@ public class FXMLDocumentController implements Initializable {
     }
     
     @FXML
+    private JFXListView<Label> einstellungenListView;
+    
+    @FXML
     private void einstellungenAnzeigen(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/Einstellungen.fxml"));
@@ -272,6 +316,7 @@ public class FXMLDocumentController implements Initializable {
             einstellungenZeitinterval.setText(einstell.getIntervallHaeufigkeit());
             einstellungenAnzahlHaeufung.setText(einstell.getIntervallAnzahl());
             einstellungenIPDB.setText(einstell.getIpAdresseDB());
+            einstellungenListView.getItems().addAll(einstellungenListe);
             //subPane.getChildren().add(pane);
         } catch (Exception e) {
             System.out.println(e.getMessage() + "\n" + e.getStackTrace());
@@ -279,6 +324,100 @@ public class FXMLDocumentController implements Initializable {
             consoleArea.appendText(new Date().toString() + ": " + e.getMessage() + "\n");
             consoleArea.appendText(new Date().toString() + ": " + e.getStackTrace() + "\n");
             setConsoleColorBlack();
+        }
+    }
+    
+    @FXML
+    void einstellungListViewClicked(MouseEvent event) {
+        try {
+            Label labl = einstellungenListView.getSelectionModel().getSelectedItem();
+            if (labl.getText().equals("Allgemein")) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/EinstellungenAllgemein.fxml"));
+                loader.setController(this);
+                //einstellungenAnchorPane = loader.load();
+                einstellungenAnchorPane.getChildren().removeAll(einstellungenAnchorPane.getChildren());
+                VBox vbox = new VBox();
+                vbox.setAlignment(Pos.CENTER);
+                HBox hbox = new HBox();
+                hbox.setAlignment(Pos.CENTER);
+                vbox.getChildren().add(hbox);
+                hbox.getChildren().add(loader.load());
+                //einstellungenAnchorPane.getChildren().add(loader.load());
+                einstellungenAnchorPane.getChildren().add(vbox);
+                System.out.println("Allgemein");
+            } else if (labl.getText().equals("Datenbank")) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/EinstellungenDatenbank.fxml"));
+                loader.setController(this);
+                einstellungenAnchorPane.getChildren().removeAll(einstellungenAnchorPane.getChildren());
+                VBox vbox = new VBox();
+                vbox.setAlignment(Pos.CENTER);
+                HBox hbox = new HBox();
+                hbox.setAlignment(Pos.CENTER);
+                vbox.getChildren().add(hbox);
+                hbox.getChildren().add(loader.load());
+                //einstellungenAnchorPane.getChildren().add(loader.load());
+                einstellungenAnchorPane.getChildren().add(vbox);
+                //einstellungenAnchorPane = loader.load();
+                System.out.println("Datenbank");
+            } else if (labl.getText().equals("System")) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/EinstellungenSystem.fxml"));
+                loader.setController(this);
+                einstellungenAnchorPane = loader.load();
+                System.out.println("System");
+            } else if (labl.getText().equals("Benutzer")) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/EinstellungenBenutzer.fxml"));
+                loader.setController(this);
+                einstellungenAnchorPane = loader.load();
+                System.out.println("Benutzer");
+            } else {
+                System.out.println(labl.getText() + " - Default");
+            }
+        } catch (Exception e) {
+            exceptionOutput(e);
+        }
+    }
+    
+    private void loadEinstellungen(String pfadEinstellung){
+        try {
+            File file = new File(pfadEinstellung);
+            if (file.exists()) {
+                String content = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
+                JSONObject json = new JSONObject(content);
+                JSONObject einstellungen = json.getJSONObject("Einstellung");
+                JSONArray listViewItem = einstellungen.getJSONArray("Einstellungsliste");
+                for (int i = 0; i < listViewItem.length(); i++) {
+                    JSONObject item = listViewItem.getJSONObject(i);
+                    EinstellungItem einstellungItem = new EinstellungItem(item.getString("Name"));
+                    JSONObject controlls = item.getJSONObject("Controlls");
+                    Iterator<?> iteratorControlls = controlls.keys();
+                    while (iteratorControlls.hasNext()) {                        
+                        String obj = iteratorControlls.next().toString();
+                        Label label = new Label(obj);
+                        JFXTextField text = new JFXTextField(controlls.get(obj).toString());
+                        text.setId(obj);
+                        einstellungItem.addNode(label,text);
+                        
+                    }
+                    for (int j = 0; j < controlls.length(); j++) {
+                        Iterator<?> iterator = controlls.keys();
+                        while (iterator.hasNext()) {                            
+                            System.out.println("While gestartet");
+                            String obj = iterator.next().toString();
+                            if (controlls.get(obj) instanceof JSONArray) {
+                                System.out.println("Es handelt sich um ein Array");
+                            } else {
+                                if (controlls.get(obj) instanceof JSONObject) {
+                                    System.out.println("Es handelt sich um ein Objekt: " + controlls.get(obj).toString());
+                                } else {
+                                    System.out.println("Es handelt sich um kein Array oder Objekt" + controlls.get(obj).toString() + " - " + obj.toString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            exceptionOutput(e);
         }
     }
     
@@ -346,6 +485,8 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private AnchorPane anmeldenAnchorPane;
+    
+    //public volatile boolean permissonOkay = false;
 
     @FXML
     void anmeldenBenutzerAnmelden(ActionEvent event) {
@@ -584,6 +725,45 @@ public class FXMLDocumentController implements Initializable {
             multiRoot = new TreeItem<Steuerung>(st);
             treeView.setShowRoot(false);
             treeView.setRoot(multiRoot);
+            try {
+                // Lade Einstellungen
+                File file = new File("einstellung.json");
+                if (file.exists()) {
+                    String content = new String(Files.readAllBytes(Paths.get(file.toURI())), "UTF-8");
+                    JSONObject json = new JSONObject(content);
+                    JSONObject einstellungen = json.getJSONObject("Einstellung");
+                    datenbankPfad = einstellungen.getString("Pfad Datenbank");
+                    dbAktiv = einstellungen.getBoolean("Datenbank Aktiv");
+                    intervallModus = einstellungen.getBoolean("Intervallmodus");
+                    zeitIntervallInTage = einstellungen.getInt("Zeitintervall in Tage");
+                    zeitIntervallzaehler = einstellungen.getInt("Intervallfehlerzaehler");
+                    configPfad = einstellungen.getString("Pfad Konfiguration");
+                    verschleißmodus = einstellungen.getBoolean("Verschleißmodus");
+                    verschleißzaehler = einstellungen.getInt("Verschleißzaehler");
+                    JSONArray listeView = einstellungen.getJSONArray("ListeView");
+                    for (int i = 0; i < listeView.length(); i++) {
+                        JSONObject object = listeView.getJSONObject(i);
+                        Label lable = new Label(object.getString("Name"));
+                        System.out.println(i + " : " + lable.getText());
+                        try {
+                            System.out.println();
+                            lable.setGraphic(new ImageView(new Image(new FileInputStream(object.getString("Bild")))));
+                            System.out.println("Bild i.O.");
+                        } catch (Exception e) {
+                            exceptionOutput(e);
+                        }
+                        System.out.println("vor");
+                        einstellungenListe.add(lable);
+                        System.out.println("isdf");
+                        //einstellungenListe.add(object.getString("Name"));
+                    }
+                }
+            } catch (Exception e) {
+                setConsoleColorRed();
+                writeConsole("Fehler bei dem Laden der Einstellung!!!");
+                setConsoleColorBlack();
+                exceptionOutput(e);
+            }
         }
         
         
@@ -617,8 +797,8 @@ public class FXMLDocumentController implements Initializable {
         }
         System.out.println("Init fertig");
         
-        ObservableList<String> items =FXCollections.observableArrayList("Hallo", "dfk");
-        fehlerListView.setItems(items);
+        //ObservableList<String> items =FXCollections.observableArrayList("Hallo", "dfk");
+        //fehlerListView.setItems(items);
     }
     
     private void writeConsole(String text){
@@ -1177,4 +1357,74 @@ public class FXMLDocumentController implements Initializable {
         }
         
     }
+    
+    /*--------------------------------------------------------------------------
+    Bereich für neuer Benutzer
+    --------------------------------------------------------------------------*/
+    @FXML
+    private JFXTextField neuerBenutzerName;
+
+    @FXML
+    private JFXTextField neuerBenutzerZugriffsstufe;
+
+    @FXML
+    private JFXPasswordField neuerBenutzerPasswort;
+
+    @FXML
+    private JFXPasswordField neuerBenutzerPasswortConfirm;
+
+    @FXML
+    void neuerBenutzerErstellen(ActionEvent event) {
+        if (neuerBenutzerName.getText().equals("") || neuerBenutzerZugriffsstufe.getText().equals("") || neuerBenutzerPasswort.getText().equals("") || neuerBenutzerPasswortConfirm.getText().equals("")) {
+            MessageBox.MessageBox.Show("Eingaben fehlen", "Bitte füllen Sie alle Felder aus !!!");
+        } else {
+            ArrayList<Benutzer> localBenutzer = new ArrayList<Benutzer>();
+            try {
+                if (neuerBenutzerPasswort.getText().equals(neuerBenutzerPasswortConfirm.getText())) {
+                    Benutzer user = new Benutzer(neuerBenutzerName.getText(), neuerBenutzerPasswort.getText(), Integer.parseInt(neuerBenutzerZugriffsstufe.getText()));
+                    localBenutzer.add(user);
+                } else {
+                    MessageBox.MessageBox.Show("Eingabefehler", "Es herscht ein Konflikt zwischen den Passwörtern. Bitte wiederholen Sie ihre Eingabe!!!");
+                    neuerBenutzerPasswort.setText("");
+                    neuerBenutzerPasswortConfirm.setText("");
+                }
+            } catch (Exception e) {
+                exceptionOutput(e);
+            }
+        }
+    }
+    
+    /*--------------------------------------------------------------------------
+    Bereich für Benutzerübersicht
+    --------------------------------------------------------------------------*/
+    @FXML
+    private JFXListView<Benutzer> benutzerVerwaltungListView;
+    
+    @FXML
+    private void benutzerUebersichtStarten(ActionEvent event){
+        try {
+            if (verwaltung.getBenutzer() == null) {
+                throw new Exception("Kein Benutzer Aktiv");
+            } else {
+                if (verwaltung.getBenutzer().hasPermission(4)) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("Center/Benutzeruebersicht.fxml"));
+                    loader.setController(this);
+                    AnchorPane paneBenutzerVerwaltung = loader.load();
+                    addTab(paneBenutzerVerwaltung, "Benutzerübersicht");
+                    loadEinstellungen("einstellung.json");
+                } else {
+                    // Keine Berechtigung
+                        MessageBox.MessageBox.Show("Keine Berechtigung für diese Aktion (Benutzerübersicht)!!!", "Zugriffsfehler");
+                }
+            }
+        } catch (Exception e) {
+            exceptionOutput(e);
+        }
+        
+    }
+    
+    /*--------------------------------------------------------------------------
+    Bereich für neuer Benutzer
+    --------------------------------------------------------------------------*/
+
 }

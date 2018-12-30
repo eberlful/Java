@@ -1,0 +1,37 @@
+{
+    "Anzahl Benutzer": 1,
+    "Checksum": "sfsdfklj",
+    "Benutzer": [
+        {
+            "Name": "Root",
+            "Passwort": "root",
+            "Zugriffsstufe": 99
+        },
+        {
+            "Name": "Superadmin",
+            "Passwort": "superadmin",
+            "Zugriffsstufe": 90
+        },
+        {
+            "Name": "Admin",
+            "Passwort": "admin",
+            "Zugriffsstufe": 80
+        },
+        {
+            "Name": "Normal",
+            "Passwort": "normal",
+            "Zugriffsstufe": 70
+        },
+        {
+            "Name": "Default",
+            "Passwort": "default",
+            "Zugriffsstufe": 0
+        }
+    ],
+    "Aktionen": [
+        {
+            "Name": "Neue Fertigung",
+            "Zugriffsstufe": 90
+        }
+    ]
+}

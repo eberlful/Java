@@ -48,6 +48,7 @@ public class Benutzer {
      * <li>1 = Neue Fertigung</li>
      * <li>2 = Neue Steuerung</li>
      * <li>3 = Neuer Fehler</li>
+     * <li>4 = Benutzerveraltung</li>
      * </ul>
      * @return Informiert, ob der aktuelle User eine gegebe Funktion ausführen darf.
      */
@@ -57,5 +58,10 @@ public class Benutzer {
         } else{
             return false;
         }
+    }
+    
+    @Override
+    public String toString(){
+        return userName;
     }
 }

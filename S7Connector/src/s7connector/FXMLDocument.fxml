@@ -182,16 +182,16 @@
                                             </ComboBox>
                                         </item>
                                     </RibbonItem>
-                                    <RibbonItem label="Decimal Places:">
+                                    <RibbonItem label="Fehlernummer:">
                                         <item>
                                             <TextField prefWidth="60" text="2"> </TextField>
                                         </item>
                                     </RibbonItem>
-                                    <RibbonItem label="Exponential Threshold:">
+                                    <!--<RibbonItem label="Exponential Threshold:">
                                         <item>
                                                 <TextField prefWidth="60" text="3"> </TextField>
                                         </item>
-                                    </RibbonItem>
+                                    </RibbonItem>-->
                                 </Column>
 
                                 <Column>
@@ -287,14 +287,14 @@
                         <RibbonGroup title="Steuerungen">
                             <nodes>
                                 <Column>
-                                    <RibbonItem label="Auswahl">
+                                    <RibbonItem label="Fertigung:">
                                         <graphic>
                                             <ImageView>
                                                 <Image url="@icons8_Change_Theme_16px.png" />
                                             </ImageView>
                                         </graphic>
                                         <item>
-                                            <ComboBox>
+                                            <ComboBox fx:id="steuerungFertigungAuswahl">
                                                 <items>
                                                     <FXCollections fx:factory="observableArrayList">
                                                         <String fx:value="Schwenklager" />
@@ -364,7 +364,7 @@
                                 </Column>
 
                                 <Column>
-                                    <ToggleButton minWidth="-Infinity" styleClass="normal" text="online">
+                                    <ToggleButton minWidth="-Infinity" styleClass="normal" text="offline">
                                         <graphic>
                                             <ImageView>
                                                 <Image url="@icons8_Lock_16px.png" />
@@ -383,14 +383,14 @@
                                         </ImageView>
                                     </graphic>
                                 </Button>
-                                <Button fx:id="steuerungVerwaltenLöschen" contentDisplay="TOP" styleClass="big" text="Löschen" wrapText="true">
+                                <Button fx:id="steuerungVerwaltenLoeschen" contentDisplay="TOP" styleClass="big" text="Löschen" wrapText="true">
                                     <graphic>
                                         <ImageView>
                                             <Image url="@icons8-fenster-schließen-40.png" />
                                         </ImageView>
                                     </graphic>
                                 </Button>
-                                <Button contentDisplay="TOP" styleClass="big" text="VCard" wrapText="true">
+                                <Button fx:id="steuerungVerwaltenVCard" contentDisplay="TOP" styleClass="big" text="VCard" wrapText="true">
                                     <graphic>
                                         <ImageView>
                                             <Image url="@icons8-mitarbeiterkarte-40.png" />
@@ -498,14 +498,14 @@
                         </RibbonGroup>
                         <RibbonGroup title="Zustand">
                             <nodes>
-                                <Button contentDisplay="TOP" styleClass="big" text="Start" wrapText="true">
+                                <Button fx:id="fertigungZustandStart" contentDisplay="TOP" styleClass="big" text="Start" wrapText="true">
                                     <graphic>
                                         <ImageView>
                                             <Image url="@icon_start.png" />
                                         </ImageView>
                                     </graphic>
                                 </Button>
-                                <Button contentDisplay="TOP" styleClass="big" text="Stop" wrapText="true">
+                                <Button fx:id="fertigungZustandStopp" contentDisplay="TOP" styleClass="big" text="Stop" wrapText="true">
                                     <graphic>
                                         <ImageView>
                                             <Image url="@icon_stop.png" />
@@ -544,16 +544,16 @@
                                 </Button>
                             </nodes>
                         </RibbonGroup>
-                        <RibbonGroup title="Konfig speichern" prefWidth="100">
+                        <RibbonGroup title="Konfig speichern">
                             <nodes>
-                                <Button id="speichern" fx:id="speichern" contentDisplay="TOP" onAction="#objekteSpeichern" prefWidth="320" styleClass="big" text="Speichern" wrapText="true">
+                                <Button id="speichern" fx:id="einstellungenSpeichern" contentDisplay="TOP" onAction="#objekteSpeichern" styleClass="big" text="Speichern" wrapText="true">
                                     <graphic>
                                         <ImageView>
                                             <Image url="@icons8_File_48px_1.png" />
                                         </ImageView>
                                     </graphic>
                                 </Button>
-                                <Button id="einstellungenLaden" fx:id="einstellungenLaden" contentDisplay="TOP" onAction="#objekteLaden" prefWidth="320" styleClass="big" text="Laden" wrapText="true">
+                                <Button id="einstellungenLaden" fx:id="einstellungenLaden" contentDisplay="TOP" onAction="#objekteLaden" styleClass="big" text="Laden" wrapText="true">
                                     <graphic>
                                         <ImageView>
                                             <Image url="@icons8_Open_48px_3.png" />
@@ -562,9 +562,9 @@
                                 </Button>
                             </nodes>
                         </RibbonGroup>
-                        <RibbonGroup title="Konfig speichern" prefWidth="100">
+                        <RibbonGroup title="Anwendung">
                             <nodes>
-                                <Button id="beenden" fx:id="beenden" contentDisplay="TOP" onAction="#anwendungBeenden" prefWidth="320" styleClass="big" text="Beenden" wrapText="true">
+                                <Button fx:id="einstellungBeenden" contentDisplay="TOP" onAction="#anwendungBeenden" prefWidth="320" styleClass="big" text="Beenden" wrapText="true">
                                     <graphic>
                                         <ImageView>
                                             <Image url="@icons8-herunterfahren-40.png" />
@@ -701,7 +701,7 @@
                                 </Column>
                             </nodes>
                         </RibbonGroup>
-                        <RibbonGroup fx:id="group" title="Verwalten">
+                        <RibbonGroup title="Verwalten">
                             <nodes>
                                 <Button fx:id="benutzerverwaltungVerwaltenNeuerBenutzer" contentDisplay="TOP" styleClass="big" text="Neuer Benutzer" wrapText="true">
                                     <graphic>
@@ -710,14 +710,21 @@
                                         </ImageView>
                                     </graphic>
                                 </Button>
-                                <Button fx:id="benutzerverwaltungVerwaltenBenutzerLöschen" contentDisplay="TOP" minWidth="100" styleClass="big" text="Benutzer Löschen" wrapText="true">
+                                <Button fx:id="benutzerverwaltungVerwaltenBenutzerLoeschen" contentDisplay="TOP" minWidth="100" styleClass="big" text="Benutzer Löschen" wrapText="true">
                                     <graphic>
                                         <ImageView>
                                             <Image url="@icons8-fenster-schließen-40.png" />
                                         </ImageView>
                                     </graphic>
                                 </Button>
-                                <Button contentDisplay="TOP" styleClass="big" text="VCard" wrapText="true">
+                                <Button fx:id="benutzerverwaltungVerwaltenVCard" contentDisplay="TOP" onAction="#benutzerUebersichtStarten" styleClass="big" text="Übersicht" wrapText="true">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@icons8-antworten-sortieren-40.png" />
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Button id="benutzerUebersicht" fx:id="benutzerverwaltungUebersicht" contentDisplay="TOP" styleClass="big" text="VCard" wrapText="true">
                                     <graphic>
                                         <ImageView>
                                             <Image url="@icons8-mitarbeiterkarte-40.png" />
@@ -800,6 +807,24 @@
                      </children></AnchorPane>
             </content>
           </TitledPane>
+            <TitledPane animated="false" text="Verschleißfehler">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
+            <TitledPane animated="false" text="Intervallfehler">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
         </panes>
       </Accordion>
    </right>
